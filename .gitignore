@@ -1,0 +1,8 @@
+.vscode
+.github
+.devcontainer
+.clang-format
+.clang-tidy
+
+bin
+build
