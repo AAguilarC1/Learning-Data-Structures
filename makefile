@@ -30,7 +30,7 @@ $(OBJS): dir
 
 $(NAME): $(OBJS)
 	@mkdir -p $(BIN_DIR)
-	@$(CC) $(CFLAGS) -o $(BIN_DIR)/$(NAME) $(addprefix $(BUILD_DIR)/, $(OBJS)) $(LDFLAGS)
+	@$(CC) $(CFLAGS) -o $(BIN_DIR)/$(NAME) $(addprefix $(BUILD_DIR)/, $(OBJS)) $(LDFLAGS) 
 
 check:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(BIN_DIR)/$(NAME)
