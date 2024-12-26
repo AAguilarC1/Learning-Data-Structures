@@ -1,4 +1,4 @@
-#include "../include/linkedlist.h"
+#include "linkedlist.h"
 
 ll_t ll_create_list(int data){
     node_t* head = n_create_node(data);
@@ -76,6 +76,97 @@ void ll_insert_node_at(ll_t* list, node_t* node, uint32_t index){
     }
 
     return;
+}
+
+node_t ll_delete_node_head(ll_t* list){
+    if(ll_is_empty(list)){
+        return (node_t){.data = -1, .next = NULL};
+    }
+
+    node_t temp = {
+        .data = list->head->data,
+        .next = NULL
+    };
+
+    node_t* temp_node = list->head;
+    list->head = list->head->next;
+    n_free_node(temp_node);
+    list->length--;
+    return temp;
+}
+
+node_t ll_delete_node_tail(ll_t* list){
+    if(ll_is_empty(list)){
+        return (node_t){.data = -1, .next = NULL};
+    }
+
+    node_t* temp_node = list->head;
+
+    while(ll_is_not_tail(list, temp_node->next->next)){
+        temp_node = temp_node->next;
+    }
+
+    node_t temp = {
+        .data = temp_node->next->data,
+        .next = NULL
+    };
+
+    n_free_node(temp_node->next);
+    temp_node->next = list->tail;
+    list->length--;
+    return temp;
+
+}
+
+node_t ll_delete_node_at(ll_t* list, uint32_t index){
+    if(ll_is_empty(list)){
+        return (node_t){.data = -1, .next = NULL};
+    }
+
+    if(index == 0){
+        return ll_delete_node_head(list);
+    }
+
+    node_t* current = list->head;
+
+    // if(ll_is_tail(list, current->next) && index >= 1){
+    //     printf("Index out of bounds\n");
+    //     return (node_t){.data = -1, .next = NULL};
+    // }
+
+    for(; ll_is_not_tail(list, current->next); current = current->next){
+        index--;
+        if(index == 0){
+            node_t temp = {
+                .data = current->next->data,
+                .next = NULL
+            };
+
+            node_t* temp_node = current->next;
+            current->next = temp_node->next;
+            n_free_node(temp_node);
+            list->length--;
+            return temp;
+        }
+    }
+
+    if(index == 1 && current->next != list->tail){
+        node_t temp = {
+            .data = current->next->data,
+            .next = NULL
+        };
+
+        node_t* temp_node = current->next;
+        current->next = temp_node->next;
+        n_free_node(temp_node);
+        list->length--;
+        return temp;
+    }
+
+    if(index > 0){
+        printf("Index out of bounds\n");
+        return (node_t){.data = -1, .next = NULL};
+    }
 }
 
 void ll_travel_list(ll_t* list, void (*callback)(void*)){

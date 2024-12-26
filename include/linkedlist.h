@@ -9,11 +9,13 @@
 #define ll_is_empty(__list__) ((__list__)->length == 0)
 #define ll_is_null(__list__) ((__list__) == NULL)
 #define ll_is_not_null(__list__) ((__list__) != NULL)
+#define ll_is_tail(__list__, __node__) ((__list__)->tail == (__node__))
+#define ll_is_not_tail(__list__, __node__) ((__list__)->tail != (__node__))
 
 struct list {
-    node_t* head;
-    node_t* tail;
     size_t length;
+    node_t* head;
+    const node_t* tail;
 };
 typedef struct list ll_t;
 
