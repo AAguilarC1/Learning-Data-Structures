@@ -1,18 +1,127 @@
 #include "../include/linkedlist.h"
 
-node_t* head = NULL;
-node_t* tail = NULL;
-
-node_t* ll_create_node(int data){
-
-    node_t* node = (node_t*)malloc(sizeof(node_t));
-    assert(ll_is_not_null(node) && "Memory allocation failed");
-
-    node->data = data;
-    node->next = NULL;
-    return node;
+ll_t ll_create_list(int data){
+    node_t* head = n_create_node(data);
+    node_t* tail = NULL;
+    head->next = tail;
+    return (ll_t){
+        .head = head,
+        .tail = tail,
+        .length = 1
+    };
 }
 
+void ll_insert_node_head(ll_t* list, node_t* node){
+    if(node_is_null(node)){
+        return;
+    }
+
+    if(ll_is_empty(list)){
+        list->head = node;
+        list->head->next = list->tail;
+        list->length++;
+        return;
+    }
+
+    node->next = list->head;
+    list->head = node;
+    list->length++;
+    return;
+}
+
+void ll_insert_node_tail(ll_t* list, node_t* node){
+    if(node_is_null(node)){
+        return;
+    }
+
+    if(ll_is_empty(list)){
+        ll_insert_node_head(list, node);
+    }
+
+    for(node_t* current = list->head; node_is_not_null(current); current = current->next){
+        if(ll_is_null(current->next)){
+            current->next = node;
+            node->next = list->tail;
+            list->length++;
+            return;
+        }
+    }
+
+}
+
+void ll_insert_node_at(ll_t* list, node_t* node, uint32_t index){
+    if(node_is_null(node)){
+        return;
+    }
+
+    if(ll_is_empty(list) || index == 0){
+        ll_insert_node_head(list, node);
+        return;
+    }
+
+    for(node_t* current = list->head; node_is_not_null(current->next); current = current->next){
+        index--;
+        if(index == 0){
+            node->next = current->next;
+            current->next = node;
+            list->length++;
+            return;
+        }
+    }
+
+    if(index > 0){
+        printf("Index out of bounds\n");
+        n_free_node(node);
+        return;
+    }
+
+    return;
+}
+
+void ll_travel_list(ll_t* list, void (*callback)(void*)){
+    if(ll_is_empty(list)){
+        return;
+    }
+
+    for(node_t* current = list->head; node_is_not_null(current); current = current->next){
+        callback(current);
+    }
+}
+
+void ll_print_list(ll_t* list){
+    if(ll_is_empty(list)){
+        printf("List is empty\n");
+        return;
+    }
+
+    ll_travel_list(list, n_print_node);
+    
+}
+
+void ll_free_list(ll_t* list){
+    if(node_is_null(list->head)){
+        return;
+    }
+
+    if(ll_is_empty(list)){
+        return;
+    }
+
+    node_t* current = list->head;
+    while(node_is_not_null(current)){
+        node_t* temp = current;
+        current = current->next;
+        n_free_node(temp);
+    }
+
+}
+
+void ll_freeDeep_list(ll_t* list){
+    ll_free_list(list);
+    list->length = 0;
+}
+
+/*
 void ll_insert_node_head(node_t* node){
     if(ll_is_empty()){
         head = node;
@@ -65,7 +174,7 @@ void ll_insert_node_at(node_t* node, uint32_t index){
 
     if(index > 0){
         printf("Index out of bounds\n");
-        ll_freeDeep_node(node);
+        ll_freeDeep(node);
         return;
 
     }
@@ -217,14 +326,6 @@ int ll_peek_at(uint32_t index){
     return -1;
 }
 
-void ll_print_node(node_t* node){
-    if(ll_is_null(node)){
-        printf("Node is null\n");
-        return;
-    }
-    printf("Node : {ref = %p; data = %d, next = %p}\n", node, node->data, node->next);
-}
-
 void ll_print_list(){
     if(ll_is_empty()){
         printf("List is empty\n");
@@ -250,27 +351,24 @@ void ll_print_list_from(node_t* node){
 }
 
 void ll_free_node(node_t* node){
-    if(ll_is_null(node)){
-        return;
-    }
 
     if(ll_is_empty()){
         return;
     }
     
-    node->data = 0;
-    free(node);
+    n_free_node(node);
 }
 
-void ll_freeDeep_node(node_t* node){
-    if(ll_is_null(node)){
-        return;
-    }
-
+void ll_freeDeep(node_t* node){
     if(ll_is_empty()){
         return;
     }
 
-    ll_freeDeep_node(node->next);
-    ll_free_node(node);
+    if(node_is_null(node)){
+        return;
+    }
+
+    ll_freeDeep(node->next);
+    n_free_node(node);
 }
+*/

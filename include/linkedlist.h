@@ -4,45 +4,41 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
+#include "node.h"
 
-#define ll_is_empty() ((head) == NULL)
-#define ll_is_null(__node__) ((__node__) == NULL)
-#define ll_is_not_null(__node__) ((__node__) != NULL)
-#define ll_travel_full_list(__callback__) ll_travel_list((__callback__), head)
-#define ll_search_full_list(__data__, __callback__) ll_search_list_from((__data__), (__callback__), head)
+#define ll_is_empty(__list__) ((__list__)->length == 0)
+#define ll_is_null(__list__) ((__list__) == NULL)
+#define ll_is_not_null(__list__) ((__list__) != NULL)
 
-struct node {
-    int data;
-    struct node *next;
+struct list {
+    node_t* head;
+    node_t* tail;
+    size_t length;
 };
-typedef struct node node_t;
+typedef struct list ll_t;
 
-extern node_t* head;
-extern node_t* tail;
+ll_t ll_create_list(int data);
 
-node_t* ll_create_node(int data);
+void ll_insert_node_head(ll_t* list, node_t* node);
+void ll_insert_node_tail(ll_t* list, node_t* node);
+void ll_insert_node_at(ll_t* list, node_t* node, uint32_t index);
 
-void ll_insert_node_head(node_t* node);
-void ll_insert_node_tail(node_t* node);
-void ll_insert_node_at(node_t* node, uint32_t index);
+node_t ll_delete_node_head(ll_t* list);
+node_t ll_delete_node_tail(ll_t* list);
+node_t ll_delete_node_at(ll_t* list, uint32_t index);
 
-node_t ll_delete_node_head();
-node_t ll_delete_node_tail();
-node_t ll_delete_node_at(uint32_t index);
+void ll_travel_list(ll_t* list, void (*callback)(void*));
+void ll_search_list_from(ll_t* list, int data, void (*callback)(void*));
+size_t ll_length(ll_t* list);
 
-void ll_travel_list(void (*callback)(void*), node_t* node);
-void ll_search_list_from(int data, void (*callback)(void*), node_t* node);
-size_t ll_length();
+int ll_peek_head(ll_t* list);
+int ll_peek_tail(ll_t* list);
+int ll_peek_at(ll_t* list, uint32_t index);
 
-int ll_peek_head();
-int ll_peek_tail();
-int ll_peek_at(uint32_t index);
+void ll_print_list(ll_t* list);
+void ll_print_list_from(ll_t* list, node_t* node);
 
-void ll_print_node(node_t* node);
-void ll_print_list();
-void ll_print_list_from(node_t* node);
-
-void ll_free_node(node_t* node);
-void ll_freeDeep_node(node_t* node);
+void ll_free_list(ll_t* list);
+void ll_freeDeep_list(ll_t* list);
 
 #endif // LINKED_LIST_H
