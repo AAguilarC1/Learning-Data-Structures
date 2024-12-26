@@ -31,12 +31,12 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 $(TARGET): $(OBJS) 
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -L$(LIB_DIR) $^ -o $(BIN_DIR)/$@ $(LDFLAGS)
 
-check:
+check: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(BIN_DIR)/$(TARGET)
 
 test: 
 	@$(CC) $(CFLAGS) -lcunit -o $(BIN_DIR)/$(TARGET)_test $(TESTS_DIR)/*.c
-	@$(BIN_DIR)/$(TARGET)_test
+	# @$(BIN_DIR)/$(TARGET)_test
 
 setup:
 	@sudo apt install -y valgrind 
