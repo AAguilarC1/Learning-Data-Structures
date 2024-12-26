@@ -1,4 +1,4 @@
-#include "../include/heap.h"
+#include "heap.h"
 
 heap_t *hp_alloc_heap(unsigned int capacity)
 {

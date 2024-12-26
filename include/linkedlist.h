@@ -30,15 +30,14 @@ node_t ll_delete_node_tail(ll_t* list);
 node_t ll_delete_node_at(ll_t* list, uint32_t index);
 
 void ll_travel_list(ll_t* list, void (*callback)(void*));
-void ll_search_list_from(ll_t* list, int data, void (*callback)(void*));
+void ll_search_list(ll_t* list, int data, void (*callback)(void*));
 size_t ll_length(ll_t* list);
 
-int ll_peek_head(ll_t* list);
-int ll_peek_tail(ll_t* list);
-int ll_peek_at(ll_t* list, uint32_t index);
+node_t ll_peek_head(ll_t* list);
+node_t ll_peek_tail(ll_t* list);
+node_t ll_peek_at(ll_t* list, uint32_t index);
 
 void ll_print_list(ll_t* list);
-void ll_print_list_from(ll_t* list, node_t* node);
 
 void ll_free_list(ll_t* list);
 void ll_freeDeep_list(ll_t* list);

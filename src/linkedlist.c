@@ -179,6 +179,64 @@ void ll_travel_list(ll_t* list, void (*callback)(void*)){
     }
 }
 
+void ll_search_list(ll_t* list, int data, void (*callback)(void*)){
+    if(ll_is_empty(list)){
+        return;
+    }
+
+    for(node_t* current = list->head; node_is_not_null(current); current = current->next){
+        if(current->data == data){
+            callback(current);
+        }
+    }
+}
+
+size_t ll_length(ll_t* list){
+    return list->length;
+}
+
+node_t ll_peek_head(ll_t* list){
+    if(ll_is_empty(list)){
+        printf("List is empty\n");
+        return (node_t){.data = -1, .next = NULL};
+    }
+
+    n_print_node(list->head);
+    return *list->head;
+}
+
+node_t ll_peek_tail(ll_t* list){
+    if(ll_is_empty(list)){
+        printf("List is empty\n");
+        return (node_t){.data = -1, .next = NULL};
+    }
+
+    for(node_t* current = list->head; node_is_not_null(current); current = current->next){
+        if(ll_is_null(current->next)){
+            n_print_node(current);
+            return *current;
+        }
+    }
+}
+
+node_t ll_peek_at(ll_t* list, uint32_t index){
+    if(ll_is_empty(list)){
+        printf("List is empty\n");
+        return (node_t){.data = -1, .next = NULL};
+    }
+
+    for(node_t* current = list->head; node_is_not_null(current); current = current->next){
+        if(index == 0){
+            n_print_node(current);
+            return *current;
+        }
+        index--;
+    }
+
+    printf("Index out of bounds\n");
+    return (node_t){.data = -1, .next = NULL};
+}
+
 void ll_print_list(ll_t* list){
     if(ll_is_empty(list)){
         printf("List is empty\n");
