@@ -19,13 +19,25 @@ int main() {
 
     CU_pSuite min_heap_suite = CU_add_suite("min_heap_suite", initialize_suite, cleanup_suite);
 
+    CU_pSuite linkedlist_suite = CU_add_suite("linkedlist_suite", initialize_suite, cleanup_suite);
+
     if (NULL == min_heap_suite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if (NULL == linkedlist_suite) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
     // Add a suite to the registry
     if (test_min_heap_suite(min_heap_suite) != 0) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if (test_linkedlist_suite(linkedlist_suite) != 0) {
         CU_cleanup_registry();
         return CU_get_error();
     }

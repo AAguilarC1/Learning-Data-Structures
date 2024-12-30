@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include "heap.h"
 
-extern CU_pSuite min_heap_suite;
-
 void testAllocateHeap();
 void testAllocateHeapFromArray();
 void testInsertIntoHeapArray();
