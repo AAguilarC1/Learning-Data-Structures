@@ -200,8 +200,9 @@ node_t ll_peek_head(ll_t* list){
         printf("List is empty\n");
         return (node_t){.data = -1, .next = NULL};
     }
-
+    #ifdef DEBUG
     n_print_node(list->head);
+    #endif
     return *list->head;
 }
 
@@ -213,7 +214,9 @@ node_t ll_peek_tail(ll_t* list){
 
     for(node_t* current = list->head; node_is_not_null(current); current = current->next){
         if(ll_is_null(current->next)){
+            #ifdef DEBUG
             n_print_node(current);
+            #endif
             return *current;
         }
     }
@@ -227,7 +230,9 @@ node_t ll_peek_at(ll_t* list, uint32_t index){
 
     for(node_t* current = list->head; node_is_not_null(current); current = current->next){
         if(index == 0){
+            #ifdef DEBUG
             n_print_node(current);
+            #endif
             return *current;
         }
         index--;
@@ -268,6 +273,8 @@ void ll_free_list(ll_t* list){
 void ll_freeDeep_list(ll_t* list){
     ll_free_list(list);
     list->length = 0;
+    list->head = NULL;
+    list->tail = NULL;
 }
 
 /*
