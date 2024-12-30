@@ -1,5 +1,5 @@
-dbg ?= 0
-TARGET := Fibonacci-Heap
+NAME := Data_Structures
+
 SRC_DIR := src
 LIB_DIR := lib
 BUILD_DIR := build
@@ -7,7 +7,13 @@ INCLUDE_DIR := ./include/
 TESTS_DIR := tests
 BIN_DIR := bin
 
-OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(wildcard $(SRC_DIR)/*.c))
+dbg ?= 0
+
+SRC := $(wildcard $(SRC_DIR)/*.c)
+
+OBJS :=  $(SRC:src/%.c=build/%.o)
+
+TESTS := $(wildcard $(TESTS_DIR)/*.c)
 
 INCS := $(patsubst $(SRC_DIR)/%.c, -I$(INCLUDE_DIR), $(wildcard $(SRC_DIR)/*.c))
 
@@ -15,6 +21,8 @@ CC := gcc
 CFLAGS := -std=gnu17 -D _GNU_SOURCE -D __STDC_WANT_LIB_EXT1__ -Wall -Wextra -pedantic
 LDFLAGS := -lm
 
+TARGET := $(BIN_DIR)/$(NAME).out
+TEST := $(BIN_DIR)/$(NAME)_test.out
 
 ifeq ($(dbg), 1)
 	CFLAGS += -g -O0
@@ -22,33 +30,42 @@ else
 	CFLAGS += -O3
 endif
 
-all: dir $(TARGET)
+dirs : 
+	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BIN_DIR)
 
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
-$(TARGET): $(OBJS) 
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -L$(LIB_DIR) $^ -o $(BIN_DIR)/$@ $(LDFLAGS)
+$(TARGET) : $(OBJS) 
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -L$(LIB_DIR) $^ -o $@ $(LDFLAGS)
+
+$(TEST): $(OBJS) 
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -I./tests/include/ $(filter-out build/main.o, $(OBJS)) $(TESTS) -lcunit -o $@ $(LDFLAGS) 
+
+all: build $(TARGET)
+
+build: dirs $(OBJS)
 
 check: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(BIN_DIR)/$(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose $(TARGET)
 
-test: 
-	@$(CC) $(CFLAGS) -lcunit -o $(BIN_DIR)/$(TARGET)_test $(TESTS_DIR)/*.c
-	# @$(BIN_DIR)/$(TARGET)_test
+test: build $(TEST)
+	@./${TEST}
 
 setup:
 	@sudo apt install -y valgrind 
+	@sudo apt install -y libcunit1 libcunit1-dev libcunit1-doc
 
 dir:
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BIN_DIR)
 
 run: all
-	@./$(BIN_DIR)/$(TARGET)
+	@./$(TARGET)
 
 clean :
 	rm -rf $(BUILD_DIR) $(BIN_DIR)
 
-.PHONY: check setup dir clean
+.PHONY: all build check clean setup 
+
