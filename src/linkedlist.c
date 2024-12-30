@@ -191,7 +191,7 @@ void ll_search_list(ll_t* list, int data, void (*callback)(void*)){
     }
 }
 
-size_t ll_length(ll_t* list){
+unsigned int ll_length(ll_t* list){
     return list->length;
 }
 

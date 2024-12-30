@@ -13,9 +13,9 @@
 #define ll_is_not_tail(__list__, __node__) ((__list__)->tail != (__node__))
 
 struct list {
-    size_t length;
     node_t* head;
     const node_t* tail;
+    unsigned int length;
 };
 typedef struct list ll_t;
 
@@ -31,7 +31,7 @@ node_t ll_delete_node_at(ll_t* list, uint32_t index);
 
 void ll_travel_list(ll_t* list, void (*callback)(void*));
 void ll_search_list(ll_t* list, int data, void (*callback)(void*));
-size_t ll_length(ll_t* list);
+unsigned int ll_length(ll_t* list);
 
 node_t ll_peek_head(ll_t* list);
 node_t ll_peek_tail(ll_t* list);
