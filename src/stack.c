@@ -3,7 +3,7 @@
 stack_t create_stack(void) {
     stack_t stack;
     stack.size = 0;
-    for(int i = 0; i < MAX_STACK_SIZE; i++) {
+    for(unsigned int i = 0; i < MAX_STACK_SIZE; i++) {
         stack.items[i] = 0;
     }
     return stack;
@@ -28,7 +28,7 @@ int pop(stack_t *stack) {
 
 void free_stack(stack_t *stack) {
     stack->size = 0;
-    for(int i = 0; i < MAX_STACK_SIZE; i++) {
+    for(unsigned int i = 0; i < MAX_STACK_SIZE; i++) {
         stack->items[i] = 0;
     }
 }

@@ -7,7 +7,7 @@
 #define stack_is_full(__stack__) (__stack__)->size == MAX_STACK_SIZE
 
 struct Stack {
-    int size;    
+    unsigned int size;    
     int items[MAX_STACK_SIZE];
 };
 typedef struct Stack stack_t;
