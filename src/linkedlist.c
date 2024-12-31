@@ -203,10 +203,6 @@ void ll_search_list(ll_t* list, int data, void (*callback)(void*)){
     }
 }
 
-inline unsigned int ll_length(ll_t* list){
-    return list->length;
-}
-
 node_t ll_peek_head(ll_t* list){
     if(ll_is_empty(list)){
         printf("List is empty\n");

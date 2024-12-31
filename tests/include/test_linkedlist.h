@@ -1,6 +1,7 @@
 #ifndef TEST_LINKEDLIST_H
 #define TEST_LINKEDLIST_H
 // TODO: Add tests for linkedlist
+#include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
 #include <stdlib.h>
 #include "linkedlist.h"
