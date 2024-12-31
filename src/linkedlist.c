@@ -102,6 +102,18 @@ node_t ll_delete_node_tail(ll_t* list){
 
     node_t* temp_node = list->head;
 
+    if(ll_is_tail(list, temp_node->next)){
+        node_t temp = {
+            .data = temp_node->data,
+            .next = NULL
+        };
+
+        n_free_node(temp_node);
+        list->head = list->tail;
+        list->length--;
+        return temp;
+    }
+
     while(ll_is_not_tail(list, temp_node->next->next)){
         temp_node = temp_node->next;
     }
@@ -191,7 +203,7 @@ void ll_search_list(ll_t* list, int data, void (*callback)(void*)){
     }
 }
 
-unsigned int ll_length(ll_t* list){
+inline unsigned int ll_length(ll_t* list){
     return list->length;
 }
 
