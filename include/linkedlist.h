@@ -13,6 +13,7 @@
 #define ll_is_not_tail(__list__, __node__) ((__list__)->tail != (__node__))
 
 #define ll_length(__list__) ((__list__)->length)
+typedef sl_node_t node_t;
 
 struct list {
     node_t* head;

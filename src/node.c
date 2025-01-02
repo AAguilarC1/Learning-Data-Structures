@@ -1,8 +1,7 @@
 #include "node.h"
+sl_node_t* n_create_node(int data){
 
-node_t* n_create_node(int data){
-
-    node_t* node = (node_t*)malloc(sizeof(node_t));
+    sl_node_t* node = (sl_node_t*)malloc(sizeof(sl_node_t));
     assert(node_is_not_null(node) && "Memory allocation failed");
 
     node->data = data;
@@ -10,7 +9,7 @@ node_t* n_create_node(int data){
     return node;
 }
 
-void n_print_node(node_t* node){
+void n_print_node(sl_node_t* node){
     if(node_is_null(node)){
         printf("Node is null\n");
         return;

@@ -9,14 +9,14 @@
 #define node_is_null(__node__) ((__node__) == NULL)
 #define node_is_not_null(__node__) ((__node__) != NULL)
 
-struct node {
+struct single_node {
     int data;
-    struct node *next;
+    struct single_node *next;
 };
-typedef struct node node_t;
+typedef struct single_node sl_node_t;
 
-node_t* n_create_node(int data);
-void n_free_node(node_t* node);
+sl_node_t* n_create_node(int data);
+void n_free_node(sl_node_t* node);
 
 void n_print_node(node_t* node);
 
