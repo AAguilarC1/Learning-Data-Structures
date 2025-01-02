@@ -39,6 +39,7 @@ int dll_add_node_head(dll_t* list, dnode_t* node){
         list->head->next = list->tail;
         list->head->prev = NULL;
         list->tail->prev = list->head;
+        list->tail->next = NULL;
         list->length++;
         return 0;
     }
@@ -80,6 +81,7 @@ int dll_add_node_tail(dll_t* list, dnode_t* node){
         list->head->next = list->tail;
         list->tail->prev = list->head;
         list->tail->next = NULL;
+        list->head->prev = NULL;
         list->length++;
         return 0;
     }
@@ -242,6 +244,105 @@ dnode_t dll_remove_node_at(dll_t* list, unsigned int index){
     return ret;
 }
 
+int dll_travel_list(dll_t* list, void (*callback)(void*)){
+    if(dll_is_null(list)){
+        return -1;
+    }
+
+    if(dll_is_empty(list)){
+        return -1;
+    }
+
+    for(dnode_t* current = list->head; node_is_not_null(current); current = current->next){
+        callback(current);
+    }
+
+    return 0;
+}
+
+dnode_t dll_search_list(dll_t* list, int data, void (*callback)(void*)){
+    dnode_t ret = {0, NULL, NULL};
+    if(dll_is_null(list)){
+        return ret;
+    }
+
+    if(dll_is_empty(list)){
+        return ret;
+    }
+
+    for(dnode_t* current = list->head; node_is_not_null(current); current = current->next){
+        if(current->data == data){
+            callback(current);
+            return *current;
+        }
+    }
+
+    return ret;
+}
+
+dnode_t dll_peek_head(dll_t* list) {
+    if(dll_is_null(list)){
+        dnode_t ret = {0, NULL, NULL};
+        return ret;
+    }
+
+    if(dll_is_empty(list)){
+        dnode_t ret = {0, NULL, NULL};
+        return ret;
+    }
+
+    return *list->head;
+}
+
+dnode_t dll_peek_tail(dll_t* list){
+    if(dll_is_null(list)){
+        dnode_t ret = {0, NULL, NULL};
+        return ret;
+    }
+
+    if(dll_is_empty(list)){
+        dnode_t ret = {0, NULL, NULL};
+        return ret;
+    }
+
+    return *list->tail;
+}
+
+dnode_t dll_peek_at(dll_t* list, unsigned int index){
+    dnode_t ret = {0, NULL, NULL};
+
+    if(dll_is_null(list)){
+        return ret;
+    }
+
+    if(index >= dll_length(list)){
+        return ret;
+    }
+
+    if(index == 0){
+        return *list->head;
+    }
+
+    if(index == dll_length(list) - 1){
+        return *list->tail;
+    }
+
+    dnode_t* current = list->head;
+    unsigned int i = 0;
+
+    while(node_is_not_null(current)){
+        if(i == index){
+            return *current;
+        }
+
+        current = current->next;
+        i++;
+    }
+
+    return ret;
+}
+
+
 int dll_print_list(dll_t* list){
     if(dll_is_null(list)){
         printf("List is null\n");
@@ -253,12 +354,8 @@ int dll_print_list(dll_t* list){
         return -1;
     }
 
-    dnode_t* current = list->head;
+    dll_travel_list(list, n_print_dnode);
 
-    while(node_is_not_null(current)){
-        n_print_dnode(current);
-        current = current->next;
-    }
 }
 
 void dll_free_list(dll_t* list){

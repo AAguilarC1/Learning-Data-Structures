@@ -28,6 +28,13 @@ dnode_t dll_remove_node_head(dll_t* list);
 dnode_t dll_remove_node_tail(dll_t* list);
 dnode_t dll_remove_node_at(dll_t* list, unsigned int index);
 
+int dll_travel_list(dll_t* list, void (*callback)(void*));
+dnode_t dll_search_list(dll_t* list, int data, void (*callback)(void*));
+
+dnode_t dll_peek_head(dll_t* list);
+dnode_t dll_peek_tail(dll_t* list);
+dnode_t dll_peek_at(dll_t* list, unsigned int index);
+
 int dll_print_list(dll_t* list);
 
 void dll_free_list(dll_t* list);
