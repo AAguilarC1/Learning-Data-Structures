@@ -15,17 +15,17 @@ struct Stack {
 };
 typedef struct Stack stack_t;
 
-stack_t create_stack(void);
-int push(stack_t *stack, int item);
-int pop(stack_t *stack);
+stack_t stack_create(void);
+int stack_push(stack_t *stack, int item);
+int stack_pop(stack_t *stack);
 
-inline int peek(stack_t *stack){
+inline int stack_peek(stack_t *stack){
     if(stack_is_empty(stack)) {
         return -1;
     }
     return stack->items[stack->size - 1];
 }
 
-void free_stack(stack_t *stack);
+void stack_free(stack_t *stack);
 
 #endif // STACK_H

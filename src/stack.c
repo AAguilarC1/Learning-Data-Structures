@@ -1,6 +1,6 @@
 #include "stack.h"
 
-stack_t create_stack(void) {
+stack_t stack_create(void) {
     stack_t stack;
     stack.size = 0;
     for(unsigned int i = 0; i < MAX_STACK_SIZE; i++) {
@@ -9,7 +9,7 @@ stack_t create_stack(void) {
     return stack;
 }
 
-int push(stack_t *stack, int item) {
+int stack_push(stack_t *stack, int item) {
     if(stack_is_full(stack)) {
         return -1;
     }
@@ -18,7 +18,7 @@ int push(stack_t *stack, int item) {
     return 0;
 }
 
-int pop(stack_t *stack) {
+int stack_pop(stack_t *stack) {
     if(stack_is_empty(stack)) {
         return -1;
     }
@@ -26,7 +26,7 @@ int pop(stack_t *stack) {
     return stack->items[stack->size];
 }
 
-void free_stack(stack_t *stack) {
+void stack_free(stack_t *stack) {
     stack->size = 0;
     for(unsigned int i = 0; i < MAX_STACK_SIZE; i++) {
         stack->items[i] = 0;
