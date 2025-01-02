@@ -1,6 +1,9 @@
 #ifndef STACK_H
 #define STACK_H
+
+#ifndef MAX_STACK_SIZE
 #define MAX_STACK_SIZE (1<<8) // 256
+#endif // MAX_STACK_SIZE
 
 #define stack_size(__stack__) (__stack__)->size
 #define stack_is_empty(__stack__) (__stack__)->size == 0
