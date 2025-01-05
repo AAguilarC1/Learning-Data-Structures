@@ -1,9 +1,17 @@
 #include <stdio.h>
 #include "doubly_linked_list.h"
 #include "linkedlist.h"
+#include "queue.h"
 
 int main(void) 
 {   
+
+    queue_t queue = qe_create_queue();
+    qe_enqueue(&queue, 1);
+    qe_enqueue(&queue, 2);
+
+    qe_print_queue(&queue);
+
     dll_t dlist = dll_create_list(0);
 
     dll_add_node_head(&dlist, n_create_dnode(1));
