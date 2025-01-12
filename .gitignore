@@ -4,6 +4,7 @@
 .clang-format
 .clang-tidy
 
+tags
 bin
 build
 Dockerfile
