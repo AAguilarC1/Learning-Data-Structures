@@ -24,6 +24,7 @@ LDFLAGS := -lm
 TARGET := $(BIN_DIR)/$(NAME).out
 TEST := $(BIN_DIR)/$(NAME)_test.out
 
+
 ifeq ($(dbg), 1)
 	CFLAGS += -g -O0
 else
@@ -67,5 +68,8 @@ run: all
 clean :
 	rm -rf $(BUILD_DIR) $(BIN_DIR)
 
-.PHONY: all build check clean setup 
+update_tags:
+	$(shell	ctags $(find . -name \*.[ch]))
+
+.PHONY: all build check clean setup update_tags
 
