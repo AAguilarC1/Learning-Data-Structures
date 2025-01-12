@@ -41,6 +41,10 @@ int qe_enqueue(queue_t *queue, void *data) {
     return 0;
 }
 
+int qe_dequeue(queue_t *queue){
+  return 0;
+}
+
 void qe_print_queue(queue_t *queue) {
     if (qe_is_null(queue)) {
         return;
