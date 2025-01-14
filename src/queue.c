@@ -64,9 +64,15 @@ int qe_dequeue(queue_t *queue){
 
 void qe_print_queue(queue_t *queue) {
     if (qe_is_null(queue)) {
-        return;
+      printf("Null pointer error\n");
+      return;
     }
     
+    if(qe_isEmpty(queue)){
+      printf("Empty queue\n");
+      return;
+    }
+
     q_node_t *current = queue->front;
     
     while (qe_is_not_null(current)) {
