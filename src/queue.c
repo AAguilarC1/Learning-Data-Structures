@@ -42,7 +42,24 @@ int qe_enqueue(queue_t *queue, void *data) {
 }
 
 int qe_dequeue(queue_t *queue){
-  return 0;
+  if(qe_is_null(queue)){
+    return -1;
+  }  
+  
+  if(qe_isEmpty(queue))
+  {
+    return 0;
+  }
+
+  q_node_t* temp;
+  int ret = 0;
+  temp = queue->front;
+  ret = temp->data;
+  queue->front = queue->front->next;
+
+  n_free_node(temp);
+  queue->size--;
+  return ret;
 }
 
 void qe_print_queue(queue_t *queue) {
