@@ -21,6 +21,14 @@ queue_t qe_create_queue(void);
 int qe_enqueue(queue_t *queue, void *data);
 int qe_dequeue(queue_t *queue);
 
+inline int qe_peek_front(queue_t *queue){
+  return queue->front->data;
+}
+
+inline int qe_peek_rear(queue_t *queue){
+  return queue->rear->data;
+}
+
 void qe_print_queue(queue_t *queue);
 
 void qe_free_queue(queue_t *queue);
