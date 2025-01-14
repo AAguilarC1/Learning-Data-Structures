@@ -10,6 +10,9 @@ int main(void)
     qe_enqueue(&queue, 1);
     qe_enqueue(&queue, 2);
 
+    qe_dequeue(&queue);
+    qe_dequeue(&queue);
+    qe_dequeue(&queue);
     qe_print_queue(&queue);
 
     dll_t dlist = dll_create_list(0);
