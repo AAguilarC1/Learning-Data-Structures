@@ -2,10 +2,16 @@
 #include "doubly_linked_list.h"
 #include "linkedlist.h"
 #include "queue.h"
+#include "binary_heap.h"
 
 int main(void) 
-{   
+{  
+  
+  int arr[3] = {1, 3 , 2};
+  
+  bnt_t heap = bnt_create_bn_tree_arr(arr, 3);
 
+  return 0;
     queue_t queue = qe_create_queue();
     qe_enqueue(&queue, 1);
     qe_enqueue(&queue, 2);
