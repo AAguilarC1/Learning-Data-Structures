@@ -66,7 +66,7 @@ void bnt_heapify(bnt_t* root, int index){
     return;
   }
   
-  if(left_child > (root->size + 1) || right_child > (root->size + 1) || pivot > (root->size + 1)){
+  if(left_child > (root->size) || right_child > (root->size) || pivot > (root->size)){
     return;
   }
 
