@@ -120,3 +120,22 @@ void bnt_enqueue(bnt_t* root, ELEMENT value){
 
 }
 
+ELEMENT bnt_dequeue(bnt_t* root){
+  if(bnt_isNull(root)){
+    return NULL;
+  }
+
+  if(bnt_isEmpty(root)){
+    return NULL;
+  }
+  
+  bnt_swap(root->data[1], root->data[root->size]);
+  ELEMENT ret = root->data[root->size];
+  root->data[root->size] = 0;
+  root->size--;
+
+  bnt_heapify(root, 1);
+
+  return ret;
+}
+
