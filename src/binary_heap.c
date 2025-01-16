@@ -103,6 +103,11 @@ void bnt_enqueue(bnt_t* root, ELEMENT value){
     return;
   }
 
+  if(bnt_isEmpty(root)){
+    root->data[1] = value;
+    root->size++;
+  }
+
   if(bnt_isFull(root)){
     root->capacity *= 2;
     root->data = realloc(root->data, sizeof(ELEMENT) * root->capacity);
