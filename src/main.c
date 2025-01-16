@@ -12,10 +12,16 @@ int main(void)
                  4, -2};
   
   bnt_t heap = bnt_create_bn_tree_arr(&arr, 11);
-  
+  bnt_enqueue(&heap, -3);
+  bnt_enqueue(&heap, 1);
+  bnt_enqueue(&heap, 29);
+  bnt_enqueue(&heap, 33);
+  bnt_enqueue(&heap, -1);
+  bnt_enqueue(&heap, -7);
   free(heap.data);
 
   return 0;
+
     queue_t queue = qe_create_queue();
     qe_enqueue(&queue, 1);
     qe_enqueue(&queue, 2);
