@@ -6,10 +6,14 @@
 
 int main(void) 
 {  
+  int arr[11] = { 1, 3, 2, 
+                 5, 10, 3, 
+                 7, 0, 2, 
+                 4, -2};
   
-  int arr[3] = {1, 3 , 2};
+  bnt_t heap = bnt_create_bn_tree_arr(&arr, 11);
   
-  bnt_t heap = bnt_create_bn_tree_arr(arr, 3);
+  free(heap.data);
 
   return 0;
     queue_t queue = qe_create_queue();
