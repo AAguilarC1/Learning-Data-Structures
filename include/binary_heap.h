@@ -49,7 +49,7 @@ typedef struct binary_tree bnt_t;
 
 bnt_t bnt_create_bn_tree(int capacity);
 bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr);
-void bnt_heapify(bnt_t* root, size_t index);
+void bnt_heapify(bnt_t* root, int index);
 
 #endif
 

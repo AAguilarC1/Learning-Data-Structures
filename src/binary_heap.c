@@ -30,14 +30,17 @@ bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
   bnt_t root = {
     .capacity = capacity,
     .size = length_arr,
-    .data = (ELEMENT) calloc(length_arr, sizeof(ELEMENT))
+    .data = (ELEMENT) calloc(length_arr + 1, sizeof(ELEMENT))
   };
   
-  for(size_t i = 0; i < root.size; i++){
-    root.data[i] = arr[i];
+  root.data[0] = 0;
+
+  for(size_t i = 0; i < root.size + 1; i++){
+    root.data[i + 1] = arr[i];
   }
   
   size_t i = (length_arr - 1) / 2;
+
   while(i > 0){
     bnt_heapify(&root, i);
     i--;
@@ -46,7 +49,7 @@ bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
   return root;
 }
 
-void bnt_heapify(bnt_t* root, size_t index){
+void bnt_heapify(bnt_t* root, int index){
   if(bnt_isNull(root)){
     return;
   }
@@ -58,18 +61,24 @@ void bnt_heapify(bnt_t* root, size_t index){
   int left_child = bnt_get_lchild_index(index);
   int right_child = bnt_get_rchild_index(index);
   int pivot = index;
-  
-  if(bnt_compare(root->data[left_child], root->data[index])){
-    pivot = left_child;
+
+  if(left_child <= 0 || right_child <= 0 || pivot <= 0) {
+    return;
   }
   
-  if(bnt_compare(root->data[right_child], root->data[index])){
-    pivot = right_child;
+  if(left_child > (root->size + 1) || right_child > (root->size + 1) || pivot > (root->size + 1)){
+    return;
+  }
+
+  int left_or_right = (bnt_compare(root->data[left_child],  root->data[right_child])) ? left_child : right_child;
+
+  if(bnt_compare(root->data[left_or_right], root->data[index])){
+    pivot = left_or_right;
   }
   
   if(pivot != index){
     bnt_swap(root->data[pivot], root->data[index]);
-    bnt_heapify(root, (int) pivot);
+    bnt_heapify(root, pivot);
   }
 
 }
