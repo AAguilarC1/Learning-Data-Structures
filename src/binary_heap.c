@@ -82,3 +82,36 @@ void bnt_heapify(bnt_t* root, int index){
   }
 
 }
+
+void bnt_bubble_up(bnt_t* root, int index){
+  int parent_index = bnt_get_prnt_index(index);
+  if(parent_index <= 0) {
+    return;
+  }
+ 
+  if(bnt_compare(root->data[parent_index], root->data[index])){
+    return;
+  }
+  
+  bnt_swap(root->data[parent_index], root->data[index]);
+  bnt_bubble_up(root, parent_index);
+
+}
+
+void bnt_enqueue(bnt_t* root, ELEMENT value){
+  if(bnt_isNull(root)){
+    return;
+  }
+
+  if(bnt_isFull(root)){
+    root->capacity *= 2;
+    root->data = realloc(root->data, sizeof(ELEMENT) * root->capacity);
+    if(root->data == NULL) return;
+  }
+
+  root->data[root->size+1] = value;
+  root->size++; 
+  bnt_bubble_up(root, root->size);
+
+}
+
