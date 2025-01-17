@@ -8,9 +8,57 @@ dn_arr_t dn_arr_create(int capacity){
   dn_arr_t dn_arr = {
     .size = 0,
     .capacity = capacity,
-    .arr = (DN_ELEMENT*) calloc(capacity, sizeof(DN_ELEMENT))
+    .data = (DN_ELEMENT*) calloc(capacity, sizeof(DN_ELEMENT))
   };
  
   return dn_arr;
 
 }
+
+void dn_arr_push(dn_arr_t* arr, DN_ELEMENT value){
+  if(dn_arr_isNull(arr)){
+    return;
+  }
+  
+  if(dn_arr_isFull(arr)){
+    arr->capacity *= 2;
+    arr->data = (DN_ELEMENT*) realloc(arr->data, sizeof(DN_ELEMENT));
+    if(dn_arr_isNull(arr->data)){
+      return;
+    }
+  }
+  arr->data[arr->size] = value;
+  arr->size++;
+}
+
+DN_ELEMENT dn_arr_pop(dn_arr_t* arr){
+  if(dn_arr_isNull(arr)){
+    return -1;
+  }
+  
+  if(dn_arr_isEmpty(arr)){
+    return -1;
+  }
+
+  DN_ELEMENT ret = arr->data[arr->size - 1];
+  arr->data[arr->size - 1] = 0;
+  arr->size--;
+
+  return ret;
+}
+
+void dn_arr_free(dn_arr_t* arr){
+  arr->size = 0;
+  arr->capacity = 0;
+  free(arr->data);
+}
+
+void dn_arr_freeDeep(dn_arr_t* arr){
+  for(size_t i = 0; i < arr->size; i++){
+    arr->data[i] = 0;
+  }
+  
+  dn_arr_free(arr);
+
+}
+
