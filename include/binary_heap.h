@@ -2,7 +2,8 @@
 #define BINARY_TREE_H
 #include<stdio.h>
 #include<stdlib.h>
-#include"util.h"
+#include "dynamical_array.h"
+#include "util.h"
 
 #define MAX_CAPACITY 255
 #define INITIAL_CAPACITY 8
@@ -57,6 +58,7 @@ bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value);
 ELEMENT bnt_dequeue(bnt_t* root);
 
 bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value);
+bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEMENT value);
 
 void bnt_free(bnt_t* root);
 void bnt_freeDeep(bnt_t* root);

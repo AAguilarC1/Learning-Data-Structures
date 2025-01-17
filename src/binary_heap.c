@@ -160,6 +160,31 @@ bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value){
   return STATUS_NOT_OK;
 }
 
+bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEMENT value){
+  if(bnt_isNull(root) || dn_arr_isNull(indexes)){
+    return STATUS_NOT_OK;
+  }
+  
+  if(curr_index > root->size){
+    return STATUS_OK;
+  }
+
+  bnt_stat_t lstat = bnt_index_of(root,
+                                  indexes,
+                                  bnt_get_lchild_index(curr_index),
+                                  value);
+  bnt_stat_t rstat = bnt_index_of(root,
+                                  indexes,
+                                  bnt_get_rchild_index(curr_index),
+                                  value);
+
+  if(root->data[curr_index] == value){
+    dn_arr_push(indexes, curr_index);
+  }
+
+  return(lstat && rstat);
+}
+
 void bnt_free(bnt_t* root){
   root->size = 0;
   root->capacity = 0;
