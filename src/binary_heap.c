@@ -185,6 +185,21 @@ bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEME
   return(lstat && rstat);
 }
 
+bnt_stat_t bnt_print_heap_with_name(bnt_t* heap, const char* name){
+  if(bnt_isNull(heap)){
+    return  STATUS_NOT_OK;
+  }
+
+  printf("%s: \{\n", name);
+
+  for(size_t i = 1; i <= heap->size; i++){
+    printf("\t %d: %d,\n", i, heap->data[i]);
+  }
+  printf("\}\n");
+
+  return STATUS_OK;
+}
+
 void bnt_free(bnt_t* root){
   root->size = 0;
   root->capacity = 0;
@@ -196,6 +211,8 @@ void bnt_freeDeep(bnt_t* root){
     root->data[i] = 0;
   }
 
-  bnt_free(root);
+  root->size = 0;
+  root->capacity = 0;
+  free(root->data);
 }
 

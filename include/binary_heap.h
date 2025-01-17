@@ -10,6 +10,7 @@
 #define ELEMENT  int* // This can later be change to void * to generalise the binary tree 
 
 #define bnt_create_bntree_default() bnt_create_bntree(INITIAL_CAPACITY)
+#define bnt_print_heap(__root__) bnt_print_heap_with_name((__root__), #__root__)
 #define bnt_get_prnt_index(__index__)     (__index__)/2
 #define bnt_get_lchild_index(__index__)   (2 * (__index__) - 1) + 1
 #define bnt_get_rchild_index(__index__)   (2 * (__index__) - 1) + 2
@@ -59,6 +60,8 @@ ELEMENT bnt_dequeue(bnt_t* root);
 
 bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value);
 bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEMENT value);
+
+bnt_stat_t bnt_print_heap_with_name(bnt_t* heap, const char* name);
 
 void bnt_free(bnt_t* root);
 void bnt_freeDeep(bnt_t* root);
