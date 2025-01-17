@@ -2,6 +2,7 @@
 #define BINARY_TREE_H
 #include<stdio.h>
 #include<stdlib.h>
+#include"util.h"
 
 #define MAX_CAPACITY 255
 #define INITIAL_CAPACITY 8
@@ -37,6 +38,7 @@
     (__B__) = __TMP__;\
 }
 
+typedef enum status bnt_stat_t;
 
 struct binary_tree {
   size_t size;
@@ -48,10 +50,12 @@ typedef struct binary_tree bnt_t;
 
 bnt_t bnt_create_bn_tree(int capacity);
 bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr);
-void bnt_heapify(bnt_t* root, int index);
+bnt_stat_t bnt_heapify(bnt_t* root, int index);
 
 void bnt_bubble_up(bnt_t* root, int index);
-void bnt_enqueue(bnt_t* root, ELEMENT value);
+bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value);
+ELEMENT bnt_dequeue(bnt_t* root);
+bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value);
 
 #endif
 

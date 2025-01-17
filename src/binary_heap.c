@@ -49,13 +49,13 @@ bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
   return root;
 }
 
-void bnt_heapify(bnt_t* root, int index){
+bnt_stat_t bnt_heapify(bnt_t* root, int index){
   if(bnt_isNull(root)){
-    return;
+    return STATUS_NOT_OK;
   }
 
   if(index < 0){
-    return;
+    return STATUS_NOT_OK;
   }
   
   int left_child = bnt_get_lchild_index(index);
@@ -63,11 +63,11 @@ void bnt_heapify(bnt_t* root, int index){
   int pivot = index;
 
   if(left_child <= 0 || right_child <= 0 || pivot <= 0) {
-    return;
+    return STATUS_OK;
   }
   
   if(left_child > (root->size) || right_child > (root->size) || pivot > (root->size)){
-    return;
+    return STATUS_NOT_OK;
   }
 
   int left_or_right = (bnt_compare(root->data[left_child],  root->data[right_child])) ? left_child : right_child;
@@ -81,6 +81,7 @@ void bnt_heapify(bnt_t* root, int index){
     bnt_heapify(root, pivot);
   }
 
+  return STATUS_OK;
 }
 
 void bnt_bubble_up(bnt_t* root, int index){
@@ -98,26 +99,28 @@ void bnt_bubble_up(bnt_t* root, int index){
 
 }
 
-void bnt_enqueue(bnt_t* root, ELEMENT value){
+bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value){
   if(bnt_isNull(root)){
-    return;
+    return STATUS_NOT_OK; 
   }
-
   if(bnt_isEmpty(root)){
     root->data[1] = value;
     root->size++;
+    return STATUS_OK;
   }
 
   if(bnt_isFull(root)){
     root->capacity *= 2;
     root->data = realloc(root->data, sizeof(ELEMENT) * root->capacity);
-    if(root->data == NULL) return;
+    if(bnt_isNull(root->data)) {
+      return STATUS_NOT_OK;
+    }
   }
 
   root->data[root->size+1] = value;
   root->size++; 
   bnt_bubble_up(root, root->size);
-
+  return STATUS_OK;
 }
 
 ELEMENT bnt_dequeue(bnt_t* root){
@@ -139,21 +142,22 @@ ELEMENT bnt_dequeue(bnt_t* root){
   return ret;
 }
 
-int bnt_contains(bnt_t* root, ELEMENT value){
+bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value){
   if(bnt_isNull(root)) {
-    return 0;
+    return STATUS_NOT_OK;
   }
   
   if(bnt_isEmpty(root)){
-    return 0;
+    return STATUS_NOT_OK; 
   }
-
+  
   for(size_t i = 1; i < root->size + 1; i++){
     if(root->data[i] == value) {
-      return 1;
+      return STATUS_OK;
     }
   }
 
-  return 0;
+  return STATUS_NOT_OK;
+}
 }
 
