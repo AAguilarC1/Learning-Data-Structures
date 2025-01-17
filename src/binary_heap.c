@@ -159,5 +159,18 @@ bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value){
 
   return STATUS_NOT_OK;
 }
+
+void bnt_free(bnt_t* root){
+  root->size = 0;
+  root->capacity = 0;
+  free(root->data);
+}
+
+void bnt_freeDeep(bnt_t* root){
+  for(size_t i = 0; i <= root->size; i++){
+    root->data[i] = 0;
+  }
+
+  bnt_free(root);
 }
 

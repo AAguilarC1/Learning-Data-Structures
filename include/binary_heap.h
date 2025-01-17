@@ -55,7 +55,11 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index);
 void bnt_bubble_up(bnt_t* root, int index);
 bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value);
 ELEMENT bnt_dequeue(bnt_t* root);
+
 bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value);
+
+void bnt_free(bnt_t* root);
+void bnt_freeDeep(bnt_t* root);
 
 #endif
 
