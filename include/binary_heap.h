@@ -2,7 +2,7 @@
 #define BINARY_TREE_H
 #include<stdio.h>
 #include<stdlib.h>
-#include "dynamical_array.h"
+#include "dynamic_array.h"
 #include "util.h"
 
 #define MAX_CAPACITY 255

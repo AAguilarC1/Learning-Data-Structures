@@ -1,10 +1,13 @@
-#include "dynamical_array.h"
+#include "dynamic_array.h"
 
 dn_arr_t dn_arr_create(int capacity){
   if(capacity > DN_MAX_ARRAY_CAPACITY){
     capacity = DN_MAX_ARRAY_CAPACITY;
   }
-
+  if(capacity <= 0){
+    capacity = DN_DEFAULT_CAPACITY;
+  }
+  
   dn_arr_t dn_arr = {
     .size = 0,
     .capacity = capacity,
@@ -19,14 +22,24 @@ void dn_arr_push(dn_arr_t* arr, DN_ELEMENT value){
   if(dn_arr_isNull(arr)){
     return;
   }
+
+  if(arr->size == DN_MAX_ARRAY_CAPACITY){
+    return;
+  }
   
   if(dn_arr_isFull(arr)){
     arr->capacity *= 2;
-    arr->data = (DN_ELEMENT*) realloc(arr->data, sizeof(DN_ELEMENT));
+    if(arr->capacity >= DN_MAX_ARRAY_CAPACITY){
+      arr->capacity = DN_MAX_ARRAY_CAPACITY;
+    }
+
+    arr->data = (DN_ELEMENT*) realloc(arr->data, sizeof(DN_ELEMENT) * arr->capacity);
+    
     if(dn_arr_isNull(arr->data)){
       return;
     }
   }
+
   arr->data[arr->size] = value;
   arr->size++;
 }
@@ -48,12 +61,20 @@ DN_ELEMENT dn_arr_pop(dn_arr_t* arr){
 }
 
 void dn_arr_free(dn_arr_t* arr){
+  if(dn_arr_isNull(arr)){
+    return;
+  }
+
   arr->size = 0;
   arr->capacity = 0;
   free(arr->data);
 }
 
 void dn_arr_freeDeep(dn_arr_t* arr){
+  if(dn_arr_isNull(arr)){
+    return;
+  }
+
   for(size_t i = 0; i < arr->size; i++){
     arr->data[i] = 0;
   }
