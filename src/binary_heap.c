@@ -1,14 +1,16 @@
 #include "binary_heap.h"
 
 bnt_t bnt_create_bn_tree(int capacity){
+  if(capacity > MAX_CAPACITY){
+    capacity = MAX_CAPACITY;
+  }
+
   bnt_t root = {
   .capacity = capacity,
   .size = 0,
-  .data = NULL
+  .data = (ELEMENT) calloc(capacity, sizeof(ELEMENT))
   };
 
-  root.data = (ELEMENT) calloc(capacity, sizeof(ELEMENT));
-  /*assert((root.nodes != NULL) && "<Null pointer excepetion> Unable to create elements of tree");*/
   return root;
 }
 
