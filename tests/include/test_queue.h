@@ -3,6 +3,7 @@
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "test_util.h"
 #include "queue.h"
 

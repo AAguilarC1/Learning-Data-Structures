@@ -3,6 +3,7 @@
 // TODO: Add tests for linkedlist
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include "linkedlist.h"
 

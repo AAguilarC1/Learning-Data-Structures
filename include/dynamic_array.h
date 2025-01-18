@@ -1,6 +1,7 @@
 #ifndef DYNAMICAL_ARRAY_H
 #define DYNAMICAL_ARRAY_H
 #include<stdlib.h>
+#include<stdint.h>
 #include<stdio.h>
 
 #define DN_MAX_ARRAY_CAPACITY 255

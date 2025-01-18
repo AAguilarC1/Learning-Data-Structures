@@ -1,7 +1,8 @@
 #ifndef TEST_H
 #define TEST_H
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include <CUnit/Basic.h>
 #include "test_util.h"
 #include "test_linkedlist.h"

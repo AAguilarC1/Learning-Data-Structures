@@ -2,7 +2,9 @@
 #define TEST_MIN_HEAP_H
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "heap.h"
 
 void testAllocateHeap();

@@ -2,6 +2,7 @@
 #define TEST_DOUBLY_LINKED_LIST_H
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include "test_util.h"
 #include "doubly_linked_list.h"

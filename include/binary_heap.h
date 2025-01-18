@@ -2,6 +2,7 @@
 #define BINARY_TREE_H
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdint.h>
 #include "dynamic_array.h"
 #include "util.h"
 

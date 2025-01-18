@@ -1,5 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
 #include "node.h"
 
 #define qe_isEmpty(__queue__) ((__queue__)->size == 0)

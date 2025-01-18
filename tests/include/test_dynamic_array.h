@@ -2,6 +2,7 @@
 #define TEST_DYNAMIC_ARRAY_H
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
+#include <stdint.h>
 #include "test_util.h"
 #include "dynamic_array.h"
 
