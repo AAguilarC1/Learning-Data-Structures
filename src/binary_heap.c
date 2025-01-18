@@ -4,6 +4,10 @@ bnt_t bnt_create_bn_tree(int capacity){
   if(capacity > MAX_CAPACITY){
     capacity = MAX_CAPACITY;
   }
+    
+  if(capacity <= 0){
+    capacity = INITIAL_CAPACITY;
+  }
 
   bnt_t root = {
   .capacity = capacity,
@@ -22,7 +26,7 @@ bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
     return (bnt_t) {.size = 0, .capacity = 0, .data = NULL};
   }
 
-  if(capacity < length_arr){
+  while(capacity < length_arr){
     capacity *= 2;
     if(capacity > MAX_CAPACITY){
       capacity = MAX_CAPACITY;
@@ -32,12 +36,12 @@ bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
   bnt_t root = {
     .capacity = capacity,
     .size = length_arr,
-    .data = (ELEMENT) calloc(length_arr + 1, sizeof(ELEMENT))
+    .data = (ELEMENT) calloc(capacity, sizeof(ELEMENT))
   };
   
   root.data[0] = 0;
 
-  for(size_t i = 0; i < root.size + 1; i++){
+  for(size_t i = 0; i < root.size; i++){
     root.data[i + 1] = arr[i];
   }
   
