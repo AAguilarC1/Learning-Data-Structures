@@ -24,6 +24,8 @@ int main() {
     CU_pSuite stack_suite = CU_add_suite("stack_suite", initialize_suite, cleanup_suite);
 
     CU_pSuite doubly_linked_list_suite = CU_add_suite("doubly_linked_list_suite", initialize_suite, cleanup_suite);
+    
+    CU_pSuite queue_suite = CU_add_suite("queue_suite", initialize_suite, cleanup_suite);
 
     if (NULL == min_heap_suite) {
         CU_cleanup_registry();
@@ -34,6 +36,11 @@ int main() {
         CU_cleanup_registry();
         return CU_get_error();
     }
+
+    if(NULL == queue_suite){
+      CU_cleanup_registry();
+      return CU_get_error();
+   }
 
     // Add a suite to the registry
     if (test_min_heap_suite(min_heap_suite) != 0) {
@@ -54,6 +61,10 @@ int main() {
     if(test_doubly_linked_list_suite(doubly_linked_list_suite) != 0){
         CU_cleanup_registry();
         return CU_get_error();
+    }
+    
+    if(test_queue_suite(queue_suite) != 0){
+      return CU_get_error();
     }
 
     // Run all tests using the basic interface
