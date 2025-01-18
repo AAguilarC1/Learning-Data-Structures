@@ -27,6 +27,8 @@ int main() {
     
     CU_pSuite queue_suite = CU_add_suite("queue_suite", initialize_suite, cleanup_suite);
 
+    CU_pSuite dyn_arr_suite = CU_add_suite("dynamic_arr_suite", initialize_suite, cleanup_suite);
+
     if (NULL == min_heap_suite) {
         CU_cleanup_registry();
         return CU_get_error();
@@ -40,6 +42,11 @@ int main() {
     if(NULL == queue_suite){
       CU_cleanup_registry();
       return CU_get_error();
+   }
+
+    if(NULL == dyn_arr_suite){
+      CU_cleanup_registry();
+     return CU_get_error();
    }
 
     // Add a suite to the registry
@@ -64,6 +71,10 @@ int main() {
     }
     
     if(test_queue_suite(queue_suite) != 0){
+      return CU_get_error();
+    }
+
+    if(test_dynamic_arr_suite(dyn_arr_suite) != 0){
       return CU_get_error();
     }
 

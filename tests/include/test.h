@@ -9,5 +9,6 @@
 #include "test_min_heap.h"
 #include "test_doubly_list.h"
 #include "test_queue.h"
+#include "test_dynamic_array.h"
 
 #endif // TEST_H
