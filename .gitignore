@@ -4,6 +4,7 @@
 .clang-format
 .clang-tidy
 
+deprecated
 tags
 bin
 build
