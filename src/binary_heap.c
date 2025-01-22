@@ -1,5 +1,12 @@
 #include "binary_heap.h"
+#include <stddef.h>
 
+/**
+ * @brief Creates an empty heap with an specified capacity
+ * @param capacity Is the capacity of the heap
+ *
+ * @note The heap dynamically increases its capacity when filled
+ **/
 bnt_t bnt_create_bn_tree(int capacity){
   if(capacity > MAX_CAPACITY){
     capacity = MAX_CAPACITY;
@@ -18,6 +25,11 @@ bnt_t bnt_create_bn_tree(int capacity){
   return root;
 }
 
+/**
+ * @brief This function generates a binary heap from an array.
+ * @param arr - Pointer to the Array of Elements to be converted to a binary heap
+ * @param length_arr - Length of the input array
+**/
 bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
   size_t capacity = INITIAL_CAPACITY; 
   
@@ -64,9 +76,9 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index){
     return STATUS_NOT_OK;
   }
   
-  int left_child = bnt_get_lchild_index(index);
-  int right_child = bnt_get_rchild_index(index);
-  int pivot = index;
+  size_t left_child = bnt_get_lchild_index(index);
+  size_t right_child = bnt_get_rchild_index(index);
+  size_t pivot = index;
 
   if(left_child <= 0 || right_child <= 0 || pivot <= 0) {
     return STATUS_OK;
@@ -76,13 +88,13 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index){
     return STATUS_NOT_OK;
   }
 
-  int left_or_right = (bnt_compare(root->data[left_child],  root->data[right_child])) ? left_child : right_child;
+  size_t left_or_right = (bnt_compare(root->data[left_child],  root->data[right_child])) ? left_child : right_child;
 
   if(bnt_compare(root->data[left_or_right], root->data[index])){
     pivot = left_or_right;
   }
   
-  if(pivot != index){
+  if(pivot != (size_t) index){
     bnt_swap(root->data[pivot], root->data[index]);
     bnt_heapify(root, pivot);
   }
@@ -199,7 +211,7 @@ bnt_stat_t bnt_print_heap_with_name(bnt_t* heap, const char* name){
   printf("%s: \{\n", name);
 
   for(size_t i = 1; i <= heap->size; i++){
-    printf("\t %d: %d,\n", i, heap->data[i]);
+    printf("\t %li: %d,\n", i, heap->data[i]);
   }
   printf("\}\n");
 
