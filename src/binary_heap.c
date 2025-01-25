@@ -307,6 +307,7 @@ void bnt_free(bnt_t* root){
   root->size = 0;
   root->capacity = 0;
   free(root->data);
+  root->data = NULL;
 }
 
 void bnt_freeDeep(bnt_t* root){
@@ -317,5 +318,6 @@ void bnt_freeDeep(bnt_t* root){
   root->size = 0;
   root->capacity = 0;
   free(root->data);
+  root->data = NULL;
 }
 

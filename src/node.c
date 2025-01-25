@@ -25,6 +25,7 @@ void n_free_node(sl_node_t* node){
     node->data = 0;
     node->next = NULL;
     free(node);
+    node = NULL;
 }
 
 dl_node_t* n_create_dnode(int data){
@@ -54,4 +55,6 @@ void n_free_dnode(dl_node_t* node){
     node->next = NULL;
     node->prev = NULL;
     free(node);
+    node = NULL;
 }
+

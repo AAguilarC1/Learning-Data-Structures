@@ -68,6 +68,7 @@ void dn_arr_free(dn_arr_t* arr){
   arr->size = 0;
   arr->capacity = 0;
   free(arr->data);
+  arr->data = NULL;
 }
 
 void dn_arr_freeDeep(dn_arr_t* arr){
