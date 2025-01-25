@@ -6,11 +6,11 @@
 #include "dynamic_array.h"
 #include "util.h"
 
-#define MAX_CAPACITY 255
+#define MAX_CAPACITY 256
 #define INITIAL_CAPACITY 8
 #define ELEMENT  int* // This can later be change to void * to generalise the binary tree 
 
-#define bnt_create_bntree_default() bnt_create_bntree(INITIAL_CAPACITY)
+#define bnt_create_bntree_default() bnt_create_bn_tree(INITIAL_CAPACITY)
 #define bnt_print_heap(__root__) bnt_print_heap_with_name((__root__), #__root__)
 #define bnt_get_prnt_index(__index__)     (__index__)/2
 #define bnt_get_lchild_index(__index__)   (2 * (__index__) - 1) + 1
@@ -54,6 +54,8 @@ typedef struct binary_tree bnt_t;
 bnt_t bnt_create_bn_tree(int capacity);
 bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr);
 bnt_stat_t bnt_heapify(bnt_t* root, int index);
+bnt_stat_t bnt_merge_heaps(bnt_t* dst, bnt_t* src);
+bnt_stat_t bnt_merge_heaps_consumer(bnt_t* dst, bnt_t* src);
 
 void bnt_bubble_up(bnt_t* root, int index);
 bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value);

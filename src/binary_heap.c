@@ -1,5 +1,7 @@
 #include "binary_heap.h"
+#include "util.h"
 #include <stddef.h>
+#include <string.h>
 
 /**
  * @brief Creates an empty heap with an specified capacity
@@ -98,6 +100,89 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index){
     bnt_swap(root->data[pivot], root->data[index]);
     bnt_heapify(root, pivot);
   }
+
+  return STATUS_OK;
+}
+
+// TODO: Test this new function
+bnt_stat_t bnt_merge_heaps(bnt_t* dst, bnt_t* src){
+  if((bnt_isNull(dst)) || (bnt_isNull(src))){
+    return STATUS_NOT_OK;
+  }
+  
+  if((bnt_isEmpty(dst)) && bnt_isEmpty(src)){
+    return STATUS_NOT_OK;
+  }
+  
+  if(bnt_isEmpty(src)){
+    return STATUS_OK;
+  }
+
+  size_t Total_Cap = dst->capacity + src->capacity;
+
+  if(Total_Cap > MAX_CAPACITY){
+    printf("Not Enought Memory. Max allocation size is %d", MAX_CAPACITY);
+    return STATUS_NOT_OK;
+  }
+  
+  if(dst->capacity < Total_Cap){
+    while(Total_Cap > dst->capacity){
+      dst->capacity *= 2;
+    }
+
+    dst->data = (ELEMENT) realloc(dst->data, dst->capacity * sizeof(ELEMENT));
+
+    if(bnt_isNull(dst->data)){
+      return STATUS_NOT_OK;
+    }
+  }
+
+  for(size_t i = 1; i <= src->size; i++){
+    ELEMENT temp = src->data[i];
+    bnt_enqueue(dst, temp);
+  }
+
+  return STATUS_OK;
+}
+
+bnt_stat_t bnt_merge_heaps_consumer(bnt_t* dst, bnt_t* src){
+  if(bnt_isNull(dst) || bnt_isNull(src)){
+    return STATUS_NOT_OK;
+  }
+  
+  if(bnt_isEmpty(dst) && bnt_isEmpty(src)){
+    return STATUS_NOT_OK;
+  }
+
+  if(bnt_isEmpty(src)){
+    bnt_free(src);
+    return STATUS_OK;
+  }
+
+  size_t total_size = dst->size + src->size;
+
+  if(total_size > MAX_CAPACITY){
+    return STATUS_NOT_OK;
+  }
+
+  if(dst->capacity < total_size){
+    while(dst->capacity < total_size){
+      dst->capacity *= 2;
+    }
+  
+    dst->data = (ELEMENT) realloc(dst->data, dst->capacity * sizeof(ELEMENT));
+
+    if(bnt_isNull(dst->data)){
+      return STATUS_NOT_OK;
+    }
+  }
+  
+  while(!(bnt_isEmpty(src))){
+    ELEMENT temp = bnt_dequeue(src);
+    bnt_enqueue(dst, temp);
+  }
+
+  bnt_free(src);
 
   return STATUS_OK;
 }
