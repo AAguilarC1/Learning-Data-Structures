@@ -74,20 +74,23 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index){
     return STATUS_NOT_OK;
   }
 
-  if(index < 0){
+  if(index <= 0){
     return STATUS_NOT_OK;
   }
-  
+
   size_t left_child = bnt_get_lchild_index(index);
   size_t right_child = bnt_get_rchild_index(index);
   size_t pivot = index;
-
-  if(left_child <= 0 || right_child <= 0 || pivot <= 0) {
-    return STATUS_OK;
-  }
   
+  // TODO: Re do this logic so it only terminates when pivot is out of bounds
   if(left_child > (root->size) || right_child > (root->size) || pivot > (root->size)){
-    return STATUS_NOT_OK;
+    if(root->size == 2){
+      if(bnt_compare(root->data[2], root->data[1])){
+        bnt_swap(root->data[2], root->data[1]);
+        return STATUS_OK;
+      }
+    }
+    return STATUS_OK;
   }
 
   size_t left_or_right = (bnt_compare(root->data[left_child],  root->data[right_child])) ? left_child : right_child;
