@@ -9,13 +9,24 @@ int main(void)
                  4, -2};
   
   bnt_t heap = bnt_create_bn_tree_arr(&heap_arr, 11);
-  bnt_enqueue(&heap,(int*) -3);
-  bnt_enqueue(&heap,(int*) 1);
-  bnt_enqueue(&heap,(int*) 29);
-  bnt_enqueue(&heap,(int*) 33);
-  bnt_enqueue(&heap,(int*) -1);
-  bnt_enqueue(&heap,(int*) -7);
- 
+
+  bnt_t heap2 = bnt_create_bn_tree(8);
+  bnt_enqueue(&heap2,(int*) -3);
+  bnt_enqueue(&heap2,(int*) 1);
+  bnt_enqueue(&heap2,(int*) 29);
+  bnt_enqueue(&heap2,(int*) 33);
+  bnt_enqueue(&heap2,(int*) -1);
+  bnt_enqueue(&heap2,(int*) -7);
+  
+  bnt_merge_heaps(&heap, &heap2);
+
+  bnt_print_heap(&heap);
+  
+  bnt_freeDeep(&heap);
+  bnt_freeDeep(&heap2);
+
+  return 0;
+
   printf("\n --- Print heap before dequeue ---\n");
   bnt_print_heap(&heap);
   
