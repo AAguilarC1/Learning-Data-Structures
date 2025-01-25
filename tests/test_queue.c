@@ -1,3 +1,4 @@
+#include "queue.h"
 #include "test_queue.h"
 
 void test_queue_create_free(void){

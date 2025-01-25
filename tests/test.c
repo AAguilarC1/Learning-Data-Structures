@@ -1,4 +1,7 @@
 #include "test.h"
+#include "test_binary_heap.h"
+#include <CUnit/CUError.h>
+#include <CUnit/TestDB.h>
 
 // Test suite initialization
 int initialize_suite() {
@@ -29,6 +32,8 @@ int main() {
 
     CU_pSuite dyn_arr_suite = CU_add_suite("dynamic_arr_suite", initialize_suite, cleanup_suite);
 
+    CU_pSuite bnt_suite = CU_add_suite("Binary_heap_suite", initialize_suite,cleanup_suite);
+
   /*
     if (NULL == min_heap_suite) {
         CU_cleanup_registry();
@@ -49,6 +54,11 @@ int main() {
       CU_cleanup_registry();
      return CU_get_error();
    }
+
+    if(NULL == bnt_suite){
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
 
     // Add a suite to the registry
   /*
@@ -77,6 +87,10 @@ int main() {
     }
 
     if(test_dynamic_arr_suite(dyn_arr_suite) != 0){
+      return CU_get_error();
+    }
+
+    if(test_binary_heap_suite(bnt_suite)){
       return CU_get_error();
     }
 

@@ -11,5 +11,6 @@
 #include "test_doubly_list.h"
 #include "test_queue.h"
 #include "test_dynamic_array.h"
+#include "test_binary_heap.h"
 
 #endif // TEST_H

@@ -1,4 +1,6 @@
 #include "test_dynamic_array.h"
+#include "dynamic_array.h"
+#include <CUnit/CUnit.h>
 
 void test_dyn_arr_create(void){
   for(size_t i = 1; i < 100; i ++){
@@ -6,7 +8,7 @@ void test_dyn_arr_create(void){
     CU_ASSERT_EQUAL(arr.size, 0);
     CU_ASSERT_EQUAL(arr.capacity, i);
     dn_arr_freeDeep(&arr);
-    CU_ASSERT_EQUAL(!dn_arr_isNull(arr.data), 1);
+    CU_ASSERT_PTR_NULL(arr.data);
   }
   
   dn_arr_t arr_cap_0 = dn_arr_create(0);

@@ -1,3 +1,4 @@
+#include "stack.h"
 #include "test_stack.h"
 
 void test_stack_create(void){

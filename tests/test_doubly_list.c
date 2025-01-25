@@ -1,4 +1,5 @@
 #include "test_doubly_list.h"
+#include "doubly_linked_list.h"
 
 void test_dll_create_list(void){
     dll_t list = dll_create_list(10);
@@ -128,3 +129,4 @@ int test_doubly_linked_list_suite(CU_pSuite dll_suite){
 
     return CUE_SUCCESS;
 }
+
