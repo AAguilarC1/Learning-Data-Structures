@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdint.h>
+#include <stdbool.h>
 #include "dynamic_array.h"
 #include "util.h"
 
@@ -62,6 +63,7 @@ bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value);
 ELEMENT bnt_dequeue(bnt_t* root);
 
 bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value);
+bool bnt_contains(bnt_t* root, ELEMENT value);
 bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEMENT value);
 
 bnt_stat_t bnt_print_heap_with_name(bnt_t* heap, const char* name);

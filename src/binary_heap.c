@@ -248,22 +248,22 @@ ELEMENT bnt_dequeue(bnt_t* root){
   return ret;
 }
 
-bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value){
+bool bnt_contains(bnt_t* root, ELEMENT value){
   if(bnt_isNull(root)) {
-    return STATUS_NOT_OK;
+    return false;
   }
   
   if(bnt_isEmpty(root)){
-    return STATUS_NOT_OK; 
+    return false; 
   }
   
   for(size_t i = 1; i < root->size + 1; i++){
     if(root->data[i] == value) {
-      return STATUS_OK;
+      return true;
     }
   }
 
-  return STATUS_NOT_OK;
+  return false;
 }
 
 bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEMENT value){
