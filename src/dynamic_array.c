@@ -28,7 +28,7 @@ void dn_arr_push(dn_arr_t* arr, DN_ELEMENT value){
   }
   
   if(dn_arr_isFull(arr)){
-    arr->capacity *= 2;
+    arr->capacity <<= 1;
     if(arr->capacity >= DN_MAX_ARRAY_CAPACITY){
       arr->capacity = DN_MAX_ARRAY_CAPACITY;
     }
