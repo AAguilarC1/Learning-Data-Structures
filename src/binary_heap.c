@@ -69,6 +69,16 @@ bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
   return root;
 }
 
+/**
+ * @brief The following function converts a given heap into:
+ * - Min Heap
+ * - Max heap
+ *   Given which type was define in the header file
+ *
+ * @param root - Is the heap that is going to be heapify
+ * @param index - Is the index from where the heapify function will start
+ * @return A status flag if the function completed or fail along the way
+ */
 bnt_stat_t bnt_heapify(bnt_t* root, int index){
   if(bnt_isNull(root)){
     return STATUS_NOT_OK;
@@ -107,7 +117,12 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index){
   return STATUS_OK;
 }
 
-// TODO: Test this new function
+/**
+ * @brief This function merges two heaps without consuming the source heap
+ * @param dst - Is the heap where the merge heaps will combine
+ * @param src - Is the heap which will be merge to the final heap 
+ * @return - A status flag if function completed or not 
+ **/
 bnt_stat_t bnt_merge_heaps(bnt_t* dst, bnt_t* src){
   if((bnt_isNull(dst)) || (bnt_isNull(src))){
     return STATUS_NOT_OK;
@@ -147,6 +162,12 @@ bnt_stat_t bnt_merge_heaps(bnt_t* dst, bnt_t* src){
   return STATUS_OK;
 }
 
+/**
+ * @brief Merges two heaps where the source heap is consumed and freed
+ * @param dst - The heap where the combine heaps will be stored
+ * @param src - The source heap which will be freed and combined to the destination heap
+ * @return - A status flag if the function completed or not
+ */
 bnt_stat_t bnt_merge_heaps_consumer(bnt_t* dst, bnt_t* src){
   if(bnt_isNull(dst) || bnt_isNull(src)){
     return STATUS_NOT_OK;
@@ -189,12 +210,17 @@ bnt_stat_t bnt_merge_heaps_consumer(bnt_t* dst, bnt_t* src){
   return STATUS_OK;
 }
 
+/**
+ * @brief This functions moves the current children upwards until the heap is balanced
+ * @param root - Is the heap where the index is located
+ * @param index - Is the index of the children that is going to be moved upwards
+**/
 void bnt_bubble_up(bnt_t* root, int index){
   int parent_index = bnt_get_prnt_index(index);
   if(parent_index <= 0) {
     return;
   }
- 
+
   if(bnt_compare(root->data[parent_index], root->data[index])){
     return;
   }
@@ -204,6 +230,12 @@ void bnt_bubble_up(bnt_t* root, int index){
 
 }
 
+/**
+ * @brief This function enqueues a value key onto the heap
+ * @param root - The heap to where the value is going to be enqueued 
+ * @param value - The value to be enqueued onto the heap
+ * @return - A status flag if the function completed successfully or not
+**/
 bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value){
   if(bnt_isNull(root)){
     return STATUS_NOT_OK; 
@@ -228,6 +260,11 @@ bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value){
   return STATUS_OK;
 }
 
+/**
+ * @brief The function removes the top value of the heap
+ * @param root - The heap where the top most value will be removed from
+ * @return The element stored at the top most important vaue of the root
+**/
 ELEMENT bnt_dequeue(bnt_t* root){
   if(bnt_isNull(root)){
     return NULL;
@@ -247,6 +284,12 @@ ELEMENT bnt_dequeue(bnt_t* root){
   return ret;
 }
 
+/**
+ * @brief The function returns true or false if the value is contained in the heap
+ * @param root - Is the heap where the value is going to be searched
+ * @param value - Is the value that is going to be search for
+ * @return True or False if the value is contained or not in the heap
+**/
 bool bnt_contains(bnt_t* root, ELEMENT value){
   if(bnt_isNull(root)) {
     return false;
@@ -265,6 +308,14 @@ bool bnt_contains(bnt_t* root, ELEMENT value){
   return false;
 }
 
+/**
+ * @brief This function will return all the indexes where Value is found
+ * @param root - Is the heap where the value is going to be searched
+ * @param indexes - Is a dynamic array where the indexes will be stored
+ * @param curr_index - Is the current index that is going to be check for the value
+ * @param value - Is the element that is being search within the heap
+ * @return - A status flag whether function completed successfully or not
+**/
 bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEMENT value){
   if(bnt_isNull(root) || dn_arr_isNull(indexes)){
     return STATUS_NOT_OK;
@@ -290,6 +341,12 @@ bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEME
   return(lstat && rstat);
 }
 
+/**
+ * @brief This function will print the values contained in the heap
+ * @param heap - Is the heap that is going to be printed
+ * @param name - The name that will be assigned to the heap
+ * @return - A status flag whether the function had failed or successfully completed
+ **/
 bnt_stat_t bnt_print_heap_with_name(bnt_t* heap, const char* name){
   if(bnt_isNull(heap)){
     return  STATUS_NOT_OK;
@@ -305,6 +362,10 @@ bnt_stat_t bnt_print_heap_with_name(bnt_t* heap, const char* name){
   return STATUS_OK;
 }
 
+/**
+ * @brief This function will free the heap
+ * @param root - Is the heap that will be freed
+ **/
 void bnt_free(bnt_t* root){
   root->size = 0;
   root->capacity = 0;
@@ -312,6 +373,10 @@ void bnt_free(bnt_t* root){
   root->data = NULL;
 }
 
+/**
+ * @brief This function will free the heap and set its values to 0
+ * @param root - The heap to be freed and its values set to 0
+ **/
 void bnt_freeDeep(bnt_t* root){
   for(size_t i = 1; i <= root->size; i++){
     root->data[i] = 0;
