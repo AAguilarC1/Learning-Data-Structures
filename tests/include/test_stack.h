@@ -2,6 +2,8 @@
 #define TEST_STACK_H
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
+#include <stdint.h>
+#include <stdlib.h>
 #include "stack.h"
 //TODO: Add tests for stack
 

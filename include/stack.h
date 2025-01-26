@@ -1,5 +1,8 @@
 #ifndef STACK_H
 #define STACK_H
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
 
 #ifndef MAX_STACK_SIZE
 #define MAX_STACK_SIZE (1<<8) // 256

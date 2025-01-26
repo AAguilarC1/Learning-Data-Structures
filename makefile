@@ -26,7 +26,7 @@ TEST := $(BIN_DIR)/$(NAME)_test.out
 
 
 ifeq ($(dbg), 1)
-	CFLAGS += -g -O0
+	CFLAGS += -g -O0 -fsanitize=address
 else
 	CFLAGS += -O3
 endif

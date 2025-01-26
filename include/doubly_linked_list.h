@@ -2,6 +2,7 @@
 #define DOUBLY_LINKED_LIST_H
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "node.h"
 
 #define dll_is_empty(__list__) ((__list__)->length == 0)

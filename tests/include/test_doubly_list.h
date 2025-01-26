@@ -2,12 +2,10 @@
 #define TEST_DOUBLY_LINKED_LIST_H
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include "test_util.h"
 #include "doubly_linked_list.h"
-
-inline int test_random_int(int upper, int lower){
-    return (rand() % (upper - lower + 1)) + lower;
-}
 
 void test_dll_create_list(void);
 void test_dll_add_remove_node_head(void);
