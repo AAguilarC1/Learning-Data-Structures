@@ -3,7 +3,12 @@
 .devcontainer
 .clang-format
 .clang-tidy
+.cache
 
+deprecated
+tags
 bin
 build
 Dockerfile
+lazygit
+compile_commands.json
