@@ -1,8 +1,11 @@
 #include "test_binary_heap.h"
 #include "binary_heap.h"
+#include "test_linkedlist.h"
 #include "test_util.h"
-#include "util.h"
+#include <CUnit/CUError.h>
 #include <CUnit/CUnit.h>
+#include <CUnit/TestDB.h>
+#include <stdbool.h>
 #include <stddef.h>
 
 void test_binary_heap_create_free(void){
@@ -76,13 +79,15 @@ void test_binary_heap_enqueue_dequeue(void){
   CU_ASSERT_PTR_NULL(heap.data);
   
   bnt_t heap2 = bnt_create_bntree_default();
+  const int limits = 20;
 
-  for(size_t i = 3; i < 8; i++){
-    int prev =-1000;
+  for(size_t i = 3; i <= 8; i++){
+    int prev = -1000;
     size_t size = 1 << i;
+    /*size_t c = 1;*/
 
     for(size_t j = 0; j < size; j++){
-      int temp = test_random_int(10, -10);
+      int temp = test_random_int(limits, -limits);
       bnt_enqueue(&heap2, temp);
     }
 
@@ -92,20 +97,118 @@ void test_binary_heap_enqueue_dequeue(void){
     while(!(bnt_isEmpty(&heap2))){
       int curr = (int) bnt_dequeue(&heap2);
       CU_ASSERT_TRUE(curr >= prev);
-      /*if(!(curr >= prev)){*/
-        /*printf("capacity: %d, size: %d", heap2.capacity, heap2.size);*/
-        /*printf("\ncurr: %d, prev: %d\n",curr, prev);*/
-      /*}*/
+      /*printf("%li. prev: %d, curr %d\n",c, prev, curr);*/
+      /*c++;*/
       prev = curr;
     }
     CU_ASSERT_TRUE(bnt_isEmpty(&heap2));
-    /*printf("capacity: %d, size: %d", heap2.capacity, heap2.size);*/
   }
   
   bnt_freeDeep(&heap2);
   CU_ASSERT_EQUAL(heap2.size, 0);
   CU_ASSERT_EQUAL(heap2.capacity, 0);
   CU_ASSERT_PTR_NULL(heap.data);
+
+}
+
+void test_binary_heap_peek(void){
+  bnt_t heap = bnt_create_bn_tree(MAX_CAPACITY);
+  int top; 
+  for(size_t i = 1; i <= MAX_CAPACITY; i++){
+    bnt_enqueue(&heap, (int*) i );
+  }
+
+  for(size_t i = 1; i <= MAX_CAPACITY; i++){
+    bnt_peek_top(&heap, &top);
+    CU_ASSERT_EQUAL(top, i);
+    bnt_dequeue(&heap);
+  }
+
+  bnt_freeDeep(&heap); 
+}
+
+void test_binary_heap_merge(void){
+  const int value_limit = 10;
+  for(size_t i = 4; i < 8; i++){
+    int prev = -1000;
+    size_t cap_heap1 = 1 << i;
+    size_t cap_heap2 = 1 << i;
+    size_t size1 = test_random_int(cap_heap1, 8);
+    size_t size2 = test_random_int(cap_heap2, 8);
+    size_t total_size = size2 + size1;
+
+    bnt_t heap1 = bnt_create_bn_tree(cap_heap1);
+    bnt_t heap2 = bnt_create_bn_tree(cap_heap2);
+    
+    for(size_t j = 1; j <= size1; j++){
+      int temp = test_random_int(value_limit, -value_limit);
+      bnt_enqueue(&heap1, temp);
+    }
+
+    for(size_t j = 1; j <= size2; j++){
+      int temp = test_random_int(value_limit, -value_limit);
+      bnt_enqueue(&heap2, temp);
+    }
+
+    bnt_merge_heaps(&heap1, &heap2);
+    CU_ASSERT_EQUAL(heap1.size, total_size);
+    CU_ASSERT_TRUE(!(bnt_isEmpty(&heap2)));
+    CU_ASSERT_TRUE(heap2.size == size2);
+    CU_ASSERT_TRUE(heap2.capacity == cap_heap2);
+    CU_ASSERT_PTR_NOT_NULL(&heap2.data);
+
+    while(!(bnt_isEmpty(&heap1))){
+      int curr = (int) bnt_dequeue(&heap1);
+      CU_ASSERT_TRUE(curr >= prev);
+      if(!(curr >= prev)){
+        printf("\ncurr: %d, prev: %d\n", curr, prev);
+      }
+      prev = curr;
+    }
+
+    bnt_freeDeep(&heap1);
+    bnt_freeDeep(&heap2);
+  }
+  
+  for(size_t i = 4; i < 8; i++){
+    int prev = -1000;
+    size_t cap_heap1 = 1 << i;
+    size_t cap_heap2 = 1 << i;
+    size_t size1 = test_random_int(cap_heap1, 8);
+    size_t size2 = test_random_int(cap_heap2, 8);
+    size_t total_size = size2 + size1;
+
+    bnt_t heap1 = bnt_create_bn_tree(cap_heap1);
+    bnt_t heap2 = bnt_create_bn_tree(cap_heap2);
+    
+    for(size_t j = 1; j <= size1; j++){
+      int temp = test_random_int(value_limit, -value_limit);
+      bnt_enqueue(&heap1, temp);
+    }
+
+    for(size_t j = 1; j <= size2; j++){
+      int temp = test_random_int(value_limit, -value_limit);
+      bnt_enqueue(&heap2, temp);
+    }
+
+    bnt_merge_heaps_consumer(&heap1, &heap2);
+
+    CU_ASSERT_EQUAL(heap1.size, total_size);
+    CU_ASSERT_TRUE(bnt_isEmpty(&heap2));
+    CU_ASSERT_TRUE(heap2.capacity == 0);
+    CU_ASSERT_PTR_NULL(heap2.data);
+
+    while(!(bnt_isEmpty(&heap1))){
+      int curr = (int) bnt_dequeue(&heap1);
+      CU_ASSERT_TRUE(curr >= prev);
+      if(!(curr >= prev)){
+        printf("\ncurr: %d, prev: %d\n", curr, prev);
+      }
+      prev = curr;
+    }
+
+    bnt_freeDeep(&heap1);
+  }
 
 }
 
@@ -119,6 +222,14 @@ int test_binary_heap_suite(CU_pSuite bnt_suite){
   }
 
   if(CU_add_test(bnt_suite, "Test heap_enqueue_dequeue", test_binary_heap_enqueue_dequeue) == NULL){
+    return CU_get_error();
+  }
+
+  if(CU_add_test(bnt_suite, "Test heap_peek_top", test_peek) == NULL){
+    return CU_get_error();
+  }
+
+  if(CU_add_test(bnt_suite, "Test heap_merge", test_binary_heap_merge)== NULL) {
     return CU_get_error();
   }
 
