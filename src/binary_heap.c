@@ -41,7 +41,7 @@ bnt_t bnt_create_bn_tree_arr(ELEMENT arr, size_t length_arr){
   }
 
   while(capacity < length_arr){
-    capacity *= 2;
+    capacity <<= 1;
     if(capacity > MAX_CAPACITY){
       capacity = MAX_CAPACITY;
     }
@@ -74,7 +74,7 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index){
     return STATUS_NOT_OK;
   }
 
-  if(index <= 0){
+  if(index < 0){
     return STATUS_NOT_OK;
   }
 
@@ -130,7 +130,7 @@ bnt_stat_t bnt_merge_heaps(bnt_t* dst, bnt_t* src){
   
   if(dst->capacity < Total_Cap){
     while(Total_Cap > dst->capacity){
-      dst->capacity *= 2;
+      dst->capacity <<= 1;
     }
 
     dst->data = (ELEMENT) realloc(dst->data, dst->capacity * sizeof(ELEMENT));
@@ -141,8 +141,7 @@ bnt_stat_t bnt_merge_heaps(bnt_t* dst, bnt_t* src){
   }
 
   for(size_t i = 1; i <= src->size; i++){
-    ELEMENT temp = src->data[i];
-    bnt_enqueue(dst, temp);
+    bnt_enqueue(dst, src->data[i]);
   }
 
   return STATUS_OK;
@@ -170,7 +169,7 @@ bnt_stat_t bnt_merge_heaps_consumer(bnt_t* dst, bnt_t* src){
 
   if(dst->capacity < total_size){
     while(dst->capacity < total_size){
-      dst->capacity *= 2;
+      dst->capacity <<= 1;
     }
   
     dst->data = (ELEMENT) realloc(dst->data, dst->capacity * sizeof(ELEMENT));
@@ -216,15 +215,15 @@ bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value){
   }
 
   if(bnt_isFull(root)){
-    root->capacity *= 2;
+    root->capacity <<= 1;
     root->data = realloc(root->data, sizeof(ELEMENT) * root->capacity);
     if(bnt_isNull(root->data)) {
       return STATUS_NOT_OK;
     }
   }
 
-  root->data[root->size+1] = value;
   root->size++; 
+  root->data[root->size] = value;
   bnt_bubble_up(root, root->size);
   return STATUS_OK;
 }
@@ -314,13 +313,11 @@ void bnt_free(bnt_t* root){
 }
 
 void bnt_freeDeep(bnt_t* root){
-  for(size_t i = 0; i <= root->size; i++){
+  for(size_t i = 1; i <= root->size; i++){
     root->data[i] = 0;
   }
 
-  root->size = 0;
-  root->capacity = 0;
-  free(root->data);
-  root->data = NULL;
-}
+  bnt_free(root);
+
+ }
 
