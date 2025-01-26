@@ -91,15 +91,21 @@ bnt_stat_t bnt_heapify(bnt_t* root, int index){
   size_t left_child = bnt_get_lchild_index(index);
   size_t right_child = bnt_get_rchild_index(index);
   size_t pivot = index;
+
+  if(left_child <=0 || right_child <= 0 || pivot <= 0){
+    return STATUS_NOT_OK;
+  }
   
   // TODO: Re do this logic so it only terminates when pivot is out of bounds
-  if(left_child > (root->size) || right_child > (root->size) || pivot > (root->size)){
-    if(root->size == 2){
-      if(bnt_compare(root->data[2], root->data[1])){
-        bnt_swap(root->data[2], root->data[1]);
-        return STATUS_OK;
-      }
+
+  if(left_child == root->size){
+    if(bnt_compare(root->data[left_child], root->data[index])){
+      bnt_swap(root->data[left_child], root->data[index]);
+      return STATUS_OK;
     }
+  }
+
+  if(right_child > (root->size) || pivot > (root->size)){
     return STATUS_OK;
   }
 
@@ -216,6 +222,10 @@ bnt_stat_t bnt_merge_heaps_consumer(bnt_t* dst, bnt_t* src){
  * @param index - Is the index of the children that is going to be moved upwards
 **/
 void bnt_bubble_up(bnt_t* root, int index){
+  if(index <= 0 || index > root->size){
+    return;
+  }
+
   int parent_index = bnt_get_prnt_index(index);
   if(parent_index <= 0) {
     return;
