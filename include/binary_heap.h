@@ -62,9 +62,22 @@ void bnt_bubble_up(bnt_t* root, int index);
 bnt_stat_t bnt_enqueue(bnt_t* root, ELEMENT value);
 ELEMENT bnt_dequeue(bnt_t* root);
 
-bnt_stat_t bnt_contains(bnt_t* root, ELEMENT value);
 bool bnt_contains(bnt_t* root, ELEMENT value);
 bnt_stat_t bnt_index_of(bnt_t* root, dn_arr_t* indexes, size_t curr_index, ELEMENT value);
+
+inline bnt_stat_t bnt_peek_top(bnt_t* root, ELEMENT top){
+  if(bnt_isNull(root)){
+    return STATUS_NOT_OK;
+  }
+
+  if(bnt_isEmpty(root)){
+    return STATUS_NOT_OK;
+  }
+
+  *top = root->data[1];
+
+  return STATUS_OK;
+}
 
 bnt_stat_t bnt_print_heap_with_name(bnt_t* heap, const char* name);
 
