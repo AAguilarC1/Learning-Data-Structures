@@ -3,6 +3,8 @@
 .devcontainer
 .clang-format
 .clang-tidy
+.cache
+deprecated
 
 tags
 bin
