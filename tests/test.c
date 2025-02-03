@@ -33,6 +33,8 @@ int main() {
     CU_pSuite dyn_arr_suite = CU_add_suite("dynamic_arr_suite", initialize_suite, cleanup_suite);
 
     CU_pSuite bnt_suite = CU_add_suite("Binary_heap_suite", initialize_suite,cleanup_suite);
+    
+    CU_pSuite rb_suite = CU_add_suite("ring_buffer_suite", initialize_suite, cleanup_suite);
 
   /*
     if (NULL == min_heap_suite) {
@@ -90,7 +92,11 @@ int main() {
       return CU_get_error();
     }
 
-    if(test_binary_heap_suite(bnt_suite)){
+    if(test_binary_heap_suite(bnt_suite) != 0){
+      return CU_get_error();
+    }
+    
+    if(test_rb_suite(rb_suite) != 0){
       return CU_get_error();
     }
 

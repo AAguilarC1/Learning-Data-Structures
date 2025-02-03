@@ -12,5 +12,6 @@
 #include "test_queue.h"
 #include "test_dynamic_array.h"
 #include "test_binary_heap.h"
+#include "test_ring_buffer.h"
 
 #endif // TEST_H
