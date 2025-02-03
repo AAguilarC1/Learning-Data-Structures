@@ -47,7 +47,10 @@ rb_t rb_create_buffer_array(RB_ELEMENT* arr, size_t array_size){
   rb.size = array_size;
   rb.read_index = 0;
   rb.write_index = array_size;
-  rb.buffer = arr;
+  rb.buffer = (RB_ELEMENT*) calloc(capacity, sizeof(RB_ELEMENT));
+  for(size_t i = 0; i < array_size; i++){
+    rb.buffer[i] = arr[i];
+  }
   return rb;
 }
 

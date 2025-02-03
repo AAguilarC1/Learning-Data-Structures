@@ -23,6 +23,8 @@ void test_rb_create_free(void){
     CU_ASSERT_EQUAL(rb2.buffer[i], arr[i]);
   }
   
+  rb_freeDeep_buffer(&rb2);
+
   for(size_t i = DEFAULT_RING_BUFFER_SIZE; i < MAX_RING_BUFFER_SIZE; i <<= 1){
     rb_t rb3 = rb_create_buffer(i);
     CU_ASSERT_EQUAL(rb3.capacity, i);
