@@ -1,8 +1,28 @@
 #include <stdio.h>
 #include "binary_heap.h"
+#include "ring_buffer.h"
 
 int main(void) 
 {  
+  rb_t rb = rb_create_buffer(16);
+  
+  rb_push(&rb, 1);
+  rb_push(&rb, 2);
+  rb_push(&rb, 3);
+
+  printf("Read index: %d\n", rb.read_index);
+  printf("Write index: %d\n", rb.write_index);
+
+  printf("Popped: %d\n", rb_pop(&rb));
+  printf("Popped: %d\n", rb_pop(&rb));
+  printf("Popped: %d\n", rb_pop(&rb));
+
+  printf("Read index: %d\n", rb.read_index);
+  printf("Write index: %d\n", rb.write_index);
+
+  rb_freeDeep_buffer(&rb);
+
+  return 0;
   int heap_arr[11] = { 1, 3, 2, 
                  5, 10, 3, 
                  7, 0, 2, 
