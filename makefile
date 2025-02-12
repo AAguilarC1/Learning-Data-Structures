@@ -17,8 +17,9 @@ TESTS := $(wildcard $(TESTS_DIR)/*.c)
 
 INCS := $(patsubst $(SRC_DIR)/%.c, -I$(INCLUDE_DIR), $(wildcard $(SRC_DIR)/*.c))
 
-CC := gcc
-CFLAGS := -std=gnu17 -D _GNU_SOURCE -D __STDC_WANT_LIB_EXT1__ -Wall -Wextra -pedantic
+# CC := gcc
+CC := clang
+CFLAGS := -std=gnu17 -D _GNU_SOURCE -D __STDC_WANT_LIB_EXT1__ -Wall -Wextra -pedantic -Wno-int-conversion -Wno-incompatible-function-pointer-types
 LDFLAGS := -lm
 
 TARGET := $(BIN_DIR)/$(NAME).out
@@ -26,7 +27,7 @@ TEST := $(BIN_DIR)/$(NAME)_test.out
 
 
 ifeq ($(dbg), 1)
-	CFLAGS += -g -O0 -fsanitize=address
+	CFLAGS += -g -O0 -fsanitize=address -fsanitize=leak -fsanitize=undefined
 else
 	CFLAGS += -O3
 endif
@@ -50,6 +51,11 @@ build: dirs $(OBJS)
 
 check: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose $(TARGET)
+
+profile: all
+	valgrind --tool=massif --verbose --massif-out-file=./bin/massif.out $(TARGET)
+	valgrind --tool=cachegrind --cachegrind-out-file=./bin/cachegrind.out $(TARGET)
+	valgrind --tool=callgrind --callgrind-out-file=./bin/callgrind.out $(TARGET)
 
 test: build $(TEST)
 	@./${TEST}
