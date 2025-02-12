@@ -39,8 +39,6 @@ void* arena_alloc(arena_t* arena, size_t size_bytes){
   assert(size_bytes > 0 && "Invalid allocation size requested. Size must be greater than 0");
 
   size_t size = size_bytes;
-  /*printf("Size: %lu\n", size);*/
-  /*assert(size <= arena->pool->capacity && "Requested allocation size is greater than region capacity");*/
 
   if(size > arena->pool->capacity){
     return NULL;
@@ -79,6 +77,21 @@ void* arena_alloc(arena_t* arena, size_t size_bytes){
     }
     
   return NULL;
+
+}
+
+void arena_reset(arena_t* arena){
+  assert(arena != NULL);
+  assert(arena->pool != NULL);
+  
+  region_t *current = arena->pool;
+  while(current != NULL){
+    memset(current->memory, 0, current->capacity * sizeof(uint8_t));
+    current->size = 0;
+    current = current->next;
+  }
+
+  arena->total_size = 0;
 
 }
 

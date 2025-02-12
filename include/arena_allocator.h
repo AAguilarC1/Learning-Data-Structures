@@ -22,7 +22,7 @@
 struct Region{
   size_t size;
   size_t capacity;
-  void* memory; // TODO: change to uintptr_t for alignment
+  void* memory; 
   struct Region* next;
 };
 
@@ -42,6 +42,7 @@ void arena_region_free(region_t* region);
 
 arena_t arena_init(size_t region_capacity, uint8_t num_regions);
 void* arena_alloc(arena_t* arena, size_t size_bytes);
+void arena_reset(arena_t* arena);
 
 void arena_destroy(arena_t* arena);
 
