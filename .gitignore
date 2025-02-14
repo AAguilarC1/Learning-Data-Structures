@@ -12,3 +12,4 @@ build
 Dockerfile
 lazygit
 compile_commands.json
+include/tso_arena_allocator.h
