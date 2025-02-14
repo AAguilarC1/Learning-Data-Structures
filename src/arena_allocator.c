@@ -33,6 +33,8 @@ arena_t arena_init(size_t region_capacity, uint8_t num_regions){
   return arena;
 }
 
+// TODO: Add alignment support for the allocation. Currently has undefined behavior according to 
+// the undefined behavior sanitizer.
 void* arena_alloc(arena_t* arena, size_t size_bytes){
   assert(arena != NULL && "Arena is NULL");
   assert(arena->pool != NULL && "Arena pool is NULL");
