@@ -74,8 +74,6 @@ run: all
 clean :
 	rm -rf $(BUILD_DIR) $(BIN_DIR)
 
-update_tags:
-	$(shell	ctags $(find . -name \*.[ch]))
 
 .PHONY: all build check clean setup update_tags
 
