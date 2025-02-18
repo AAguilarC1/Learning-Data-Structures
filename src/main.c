@@ -9,25 +9,25 @@ typedef struct TestStruct test_struct;
 
 int main(void) 
 {  
-  arena_t arena = arena_init(1024, 3);
+  arena_t arena = arena_init(KB(1), 3);
   printf("Before allocation\n");
   printf("Arena region capacity: %lu\n", arena.pool->capacity);
   printf("Arena total size: %lu\n", arena.total_size);
   printf("Arena num regions: %u\n", arena.num_regions_available);
   printf("Max total size: %lu\n", arena.total_capacity);
 
-  size_t ptr3_len = 100;
-  size_t ptr4_len = 100;
+  size_t ptr3_len = (256)/sizeof(int32_t);
+  size_t ptr4_len = (256)/sizeof(double);
   int32_t* ptr3 = (int32_t*) arena_alloc(&arena, ptr3_len * sizeof(int32_t));
-  double* ptr4 = (double*) arena_alloc(&arena, ptr4_len * sizeof(double));
-  char* ptr5 = (char*) arena_alloc(&arena, 55 * sizeof(char));
+  double* ptr4 = (double*) arena_alloc_align(&arena, ptr4_len * sizeof(double), _Alignof(double));
+  char* ptr5 = (char*) arena_alloc(&arena, 256 * sizeof(char));
 
   printf("After allocation\n");
   printf("Arena total size: %lu\n", arena.total_size);
   printf("Arena num regions available: %u\n", arena.num_regions_available);
 
-  if(ptr5 != NULL){
-    memcpy(ptr5, "Hello, World!", 13);
+  if(ptr5 != NULL){ 
+    memcpy(ptr5, "Hello, World!", 14);
     printf("ptr5: %s\n", ptr5);
   }
   

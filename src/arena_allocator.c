@@ -1,4 +1,8 @@
 #include "arena_allocator.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
+#include <sys/types.h>
 
 region_t* arena_region_alloc(size_t capacity){
   region_t *region = (region_t*) malloc(sizeof(region_t));
@@ -33,54 +37,70 @@ arena_t arena_init(size_t region_capacity, uint8_t num_regions){
   return arena;
 }
 
-// TODO: Add alignment support for the allocation. Currently has undefined behavior according to 
-// the undefined behavior sanitizer.
-void* arena_alloc(arena_t* arena, size_t size_bytes){
-  assert(arena != NULL && "Arena is NULL");
+
+void* arena_alloc_align(arena_t* arena, size_t size_bytes, size_t alignment){
+ assert(arena != NULL && "Arena is NULL");
   assert(arena->pool != NULL && "Arena pool is NULL");
   assert(size_bytes > 0 && "Invalid allocation size requested. Size must be greater than 0");
-
-  size_t size = size_bytes;
-
-  if(size > arena->pool->capacity){
-    return NULL;
-  }
+  assert(alignment > 0 && "Invalid alignment requested. Alignment must be greater than 0");
 
   if(arena_isFull(arena)){
     return NULL;
   }
 
-  if(!arena_hasSpace(arena, size)){
+  if(!arena_hasSpace(arena, size_bytes)){
+    return NULL;
+  }
+  
+  if(alignment == 0 || (alignment & (alignment - 1)) != 0){
     return NULL;
   }
 
   region_t *current = arena->pool;
 
   while(current != NULL){
-    if(arena_region_hasSpace(current, size)){
-      void* ptr = (uint8_t*) current->memory + current->size;
-      current->size += size;
-      arena->total_size += size;
-      return ptr;
+    uintptr_t offset = (uintptr_t) current->size + (uintptr_t) current->memory;
+    uintptr_t padding = (~offset + 1) & (alignment - 1);
+    offset += padding;
+
+    if(offset + size_bytes <= (uintptr_t) current->memory + (uintptr_t) current->capacity){
+      current->size += size_bytes + padding;
+      arena->total_size += size_bytes + padding;
+      memset((void*) offset, 0, size_bytes);
+      return (void*) offset;
     }
-    current = current->next;  
+    current = current->next;
   }
-    if(arena->num_regions_available > 0){
-      region_t *new_region = arena_region_alloc(arena->pool->capacity);
-      new_region->next = arena->pool;
-      arena->pool = new_region;
-      arena->num_regions_available--;
 
-      void* ptr = new_region->memory;
-      new_region->size += size;
-      arena->total_size += size;
-      return ptr;
-
-    }
+  if(arena->num_regions_available > 0){
+    region_t *new_region = arena_region_alloc(arena->pool->capacity);
     
-  return NULL;
+    uintptr_t offset = (uintptr_t) new_region->memory;
+    uintptr_t padding = (~offset + 1) & (alignment - 1);
+    offset += padding;
 
+    if(offset + size_bytes > (uintptr_t) new_region->memory + (uintptr_t) new_region->capacity){
+      arena_region_free(new_region);
+      return NULL;
+    }
+
+    new_region->next = arena->pool;
+    arena->pool = new_region;
+    arena->num_regions_available--;
+  
+    new_region->size += size_bytes + padding;
+    arena->total_size += size_bytes + padding;
+    memset((void*) offset, 0, size_bytes);
+    return (void*) offset;
+  }
+
+  return NULL;
 }
+
+void* arena_alloc(arena_t* arena, size_t size_bytes){
+  return arena_alloc_align(arena, size_bytes, _Alignof(uint32_t));
+}
+ 
 
 void arena_reset(arena_t* arena){
   assert(arena != NULL);

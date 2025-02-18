@@ -8,7 +8,9 @@
 #include <string.h>
 #include <assert.h>
 
-#define ARENA_DEFAULT_REGION_CAPACITY 1024
+#define KB(__SIZE__) ((__SIZE__) * 1024)
+#define MB(__SIZE__) ((__SIZE__) * 1024 * 1024)
+#define ARENA_DEFAULT_REGION_CAPACITY KB(1)
 
 #ifndef ARENA_MAX_NUM_REGIONS
 #define ARENA_MAX_NUM_REGIONS 10
@@ -41,6 +43,7 @@ region_t* arena_region_alloc(size_t capacity);
 void arena_region_free(region_t* region);
 
 arena_t arena_init(size_t region_capacity, uint8_t num_regions);
+void* arena_alloc_align(arena_t* arena, size_t size_bytes, size_t alignment);
 void* arena_alloc(arena_t* arena, size_t size_bytes);
 void arena_reset(arena_t* arena);
 
