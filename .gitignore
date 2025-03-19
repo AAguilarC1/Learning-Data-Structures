@@ -15,4 +15,5 @@ lazygit
 compile_commands.json
 include/tso_arena_allocator.h
 README.Docker.md
-
+Dockerfile
+compose.yaml
