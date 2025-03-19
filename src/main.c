@@ -1,86 +1,68 @@
-#include <stdio.h>
-#include "binary_heap.h"
-#include "ring_buffer.h"
+#include "arena_allocator.h"
+
+struct TestStruct{
+  int a;
+  int b;
+  int c;
+};
+typedef struct TestStruct test_struct;
 
 int main(void) 
 {  
-  rb_t rb = rb_create_buffer(16);
-  
-  rb_push(&rb, 1);
-  rb_push(&rb, 2);
-  rb_push(&rb, 3);
+  arena_t arena = arena_init(KB(1), 3);
+  printf("Before allocation\n");
+  printf("Arena region capacity: %lu\n", arena.pool->capacity);
+  printf("Arena total size: %lu\n", arena.total_size);
+  printf("Arena num regions: %u\n", arena.num_regions_available);
+  printf("Max total size: %lu\n", arena.total_capacity);
 
-  printf("Read index: %d\n", rb.read_index);
-  printf("Write index: %d\n", rb.write_index);
+  size_t ptr3_len = (256)/sizeof(int32_t);
+  size_t ptr4_len = (256)/sizeof(double);
+  int32_t* ptr3 = (int32_t*) arena_alloc(&arena, ptr3_len * sizeof(int32_t));
+  double* ptr4 = (double*) arena_alloc_align(&arena, ptr4_len * sizeof(double), _Alignof(double));
+  char* ptr5 = (char*) arena_alloc(&arena, 256 * sizeof(char));
 
-  printf("Popped: %d\n", rb_pop(&rb));
-  printf("Popped: %d\n", rb_pop(&rb));
-  printf("Popped: %d\n", rb_pop(&rb));
+  printf("After allocation\n");
+  printf("Arena total size: %lu\n", arena.total_size);
+  printf("Arena num regions available: %u\n", arena.num_regions_available);
 
-  printf("Read index: %d\n", rb.read_index);
-  printf("Write index: %d\n", rb.write_index);
-
-  rb_freeDeep_buffer(&rb);
-
-  return 0;
-  int heap_arr[11] = { 1, 3, 2, 
-                 5, 10, 3, 
-                 7, 0, 2, 
-                 4, -2};
-  
-  bnt_t heap = bnt_create_bn_tree_arr(&heap_arr, 11);
-
-  bnt_t heap2 = bnt_create_bn_tree(8);
-  bnt_enqueue(&heap2,(int*) -3);
-  bnt_enqueue(&heap2,(int*) 1);
-  bnt_enqueue(&heap2,(int*) 29);
-  bnt_enqueue(&heap2,(int*) 33);
-  bnt_enqueue(&heap2,(int*) -1);
-  bnt_enqueue(&heap2,(int*) -7);
-  
-  bnt_merge_heaps(&heap, &heap2);
-
-  bnt_print_heap(&heap);
-  
-  bnt_freeDeep(&heap);
-  bnt_freeDeep(&heap2);
-
-  return 0;
-
-  printf("\n --- Print heap before dequeue ---\n");
-  bnt_print_heap(&heap);
-  
-  size_t num_dq = 8;
-  printf("\nDequeueing %d elements from queue:", num_dq);
-
-  for(size_t i = 0; i < num_dq; i++){
-    printf("%d, ", (int) bnt_dequeue(&heap));
+  if(ptr5 != NULL){ 
+    memcpy(ptr5, "Hello, World!", 14);
+    printf("ptr5: %s\n", ptr5);
   }
-  printf("\n");
-
-  printf("\n--- Print heap after dequeue ---\n");
   
-  bnt_enqueue(&heap,(int*) 1);
-  bnt_enqueue(&heap,(int*) -1);
-  bnt_enqueue(&heap,(int*) -100);
-  bnt_enqueue(&heap,(int*) 100);
+  test_struct* ptr6 = (test_struct*) arena_alloc(&arena, 3*  sizeof(test_struct));
+  if(ptr6 != NULL){
+    ptr6->a = 10;
+    ptr6->b = 20;
+    ptr6->c = 30;
 
-  bnt_print_heap(&heap);
-
-  dn_arr_t indexes = dn_arr_create_default();
-  
-  int look_for = 1;
-  bnt_index_of(&heap, &indexes, 1, &look_for);
-  
-  printf("Found %i instances of %i With indexes: \[", indexes.size, look_for);
-
-  for(size_t i = 0; i < indexes.size; i++){
-    printf("%d, ", indexes.data[i]);
+    printf("ptr6->a: %i\n", ptr6->a);
+    printf("ptr6->b: %i\n", ptr6->b);
+    printf("ptr6->c: %i\n", ptr6->c);
   }
 
-  printf("\]\n");
-  bnt_freeDeep(&heap);
-  dn_arr_freeDeep(&indexes);
+  if(ptr4 != NULL){
+    for(size_t i = 0; i < ptr4_len; i++){
+      ptr4[i] = rand() / (float) RAND_MAX; 
+    }
+
+    for(size_t i = 0; i < ptr4_len; i++){
+      printf("ptr4[%lu]: %f\n", i, ptr4[i]);
+    }
+  }
+
+  if(ptr3 != NULL){
+    for(size_t i = 0; i < ptr3_len; i++){
+      ptr3[i] = (uint16_t) i;
+    }
+
+    for(size_t i = 0; i < ptr3_len; i++){
+      printf("ptr3[%lu]: %i\n", i, ptr3[i]);
+    }
+  }
+  arena_destroy(&arena);
 
   return 0;
-  }
+
+}

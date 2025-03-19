@@ -4,12 +4,13 @@
 .clang-format
 .clang-tidy
 .cache
+.dockerignore
 
 deprecated
 tags
 bin
 build
-Dockerfile
+# Dockerfile
 lazygit
 compile_commands.json
 include/tso_arena_allocator.h
