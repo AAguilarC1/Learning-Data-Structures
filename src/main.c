@@ -31,7 +31,7 @@ int main(void)
     printf("ptr5: %s\n", ptr5);
   }
   
-  test_struct* ptr6 = (test_struct*) arena_alloc(&arena,  sizeof(test_struct));
+  test_struct* ptr6 = (test_struct*) arena_alloc(&arena, 3*  sizeof(test_struct));
   if(ptr6 != NULL){
     ptr6->a = 10;
     ptr6->b = 20;

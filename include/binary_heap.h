@@ -14,8 +14,8 @@
 #define bnt_create_bntree_default() bnt_create_bn_tree(INITIAL_CAPACITY)
 #define bnt_print_heap(__root__) bnt_print_heap_with_name((__root__), #__root__)
 #define bnt_get_prnt_index(__index__)     (__index__)/2
-#define bnt_get_lchild_index(__index__)   (2 * (__index__) - 1) + 1
-#define bnt_get_rchild_index(__index__)   (2 * (__index__) - 1) + 2
+#define bnt_get_lchild_index(__index__)   (2 * (__index__))
+#define bnt_get_rchild_index(__index__)   (2 * (__index__) + 1)
 #define bnt_get_Capacity(__root__) (__root__)->capacity
 
 #define bnt_isNull(__root__) (__root__) == NULL
