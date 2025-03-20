@@ -25,11 +25,17 @@ LDFLAGS := -lm
 TARGET := $(BIN_DIR)/$(NAME).out
 TEST := $(BIN_DIR)/$(NAME)_test.out
 
+sanitize ?= 0
 
 ifeq ($(dbg), 1)
-	CFLAGS += -g -O0 -fsanitize=address -fsanitize=leak -fsanitize=undefined
+	CFLAGS += -g -O0	
 else
 	CFLAGS += -O3
+endif
+
+ifeq ($(sanitize), 1)
+	CFLAGS += -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
+	LDFLAGS += -fsanitize=address -fsanitize=undefined
 endif
 
 dirs : 
