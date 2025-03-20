@@ -1,3 +1,8 @@
+
+#extensions
+*.yaml
+
+#folders
 .vscode
 .github
 .devcontainer
@@ -10,7 +15,9 @@ deprecated
 tags
 bin
 build
-# Dockerfile
+
+#files
 lazygit
 compile_commands.json
 include/tso_arena_allocator.h
+Dockerfile
