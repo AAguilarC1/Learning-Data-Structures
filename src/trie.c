@@ -1,14 +1,20 @@
 #include "trie.h"
-#include "arena_allocator.h"
-static const arena_t* trie_arena;
+#include <stdlib.h>
 
-void init_trie_arena(void){
-  trie_arena  = malloc(sizeof(arena_t)); 
-  arena_t temp = arena_init(ARENA_SIZE, ARENA_PAGES);
-  memcpy(trie_arena, &temp, sizeof(arena_t));
+
+
 }
 
-void destroy_trie_arena(void){
-  arena_destroy(trie_arena);
+trie_t trie_create(void){
+  trie_t trie = {0};
+  trie.pool = arena_init(ARENA_SIZE, ARENA_PAGES);
+  trie.root = arena_alloc(&trie.pool, sizeof(trie_node_t));
+  return trie;
 }
+
+void trie_destroy(trie_t* trie){
+  arena_destroy(&trie->pool);
+  trie->root = NULL;
+}
+
 
