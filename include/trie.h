@@ -34,4 +34,12 @@ void trie_destroy(trie_t* trie);
 void trie_insert(trie_t* trie, const char* key);
 bool trie_search(trie_t* trie, const char* key);
 
+// TODO: Implement trie_delete
+void trie_delete(trie_t* trie, const char* key);
+
+// TODO: Implement trie_print
+void trie_print_helper(trie_node_t* node, char* buffer, size_t len);
+void trie_print(trie_t* trie);
+
 #endif // TRIE_H
+
