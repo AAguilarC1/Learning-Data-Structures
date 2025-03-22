@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "arena_allocator.h"
@@ -16,6 +17,10 @@ struct Trie{
 };
 
 typedef struct Trie trie_t;
+
+
+void trie_str_to_lower(char* str, size_t len);
+bool trie_valid_key(const char* key);
 
 trie_t trie_create(void);
 void trie_destroy(trie_t* trie);
