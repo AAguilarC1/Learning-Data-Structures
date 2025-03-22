@@ -39,4 +39,61 @@ void trie_destroy(trie_t* trie){
   trie->root = NULL;
 }
 
+void trie_insert(trie_t *trie, const char *key){
+  trie_node_t *current = trie->root;
+
+  char buffer[MAX_STR_LEN] = {0}; 
+  
+  size_t len = strlen(buffer);
+  memcpy(buffer, key, len);
+
+  trie_str_to_lower(buffer, len);
+  
+  if (!trie_valid_key(buffer)){
+    return;
+  }
+  
+  for(size_t i = 0; i < len; i++){
+    size_t index = buffer[i] - 'a';
+    if(current->children[index] == NULL){
+      current->children[index] = arena_alloc(&trie->pool, sizeof(trie_node_t));
+    }
+    current = current->children[index];
+  }
+
+  current->is_end_of_word = true;
+
+}
+
+bool trie_search(trie_t* trie, const char* key){
+  trie_node_t *current = trie->root;
+  
+  char buffer[MAX_STR_LEN] = {0};
+
+  size_t len = strlen(buffer);
+  memcpy(buffer, key, len);
+  
+  if (!trie_valid_key(buffer)){
+    return false;
+  }
+
+  trie_str_to_lower((char*) buffer, len);
+
+  for(size_t i = 0; i < len; i++){ 
+    if (buffer[i] == 32){
+      current = trie->root;
+      continue;
+    }
+
+    size_t index = buffer[i] - 'a';
+
+    if(current->children[index] == NULL){
+      return false;
+    }
+
+    current = current->children[index];
+  }
+
+  return current->is_end_of_word;
+}
 
